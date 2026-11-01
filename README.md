@@ -4,10 +4,10 @@ WinUI 3 class library **`O.Ui`** (folder `o-ui/O.Ui/`). **HCW.ui / `Hcw.Ui` is r
 
 | App | Accent file | Colour |
 |---|---|---|
-| O-Studio | `SuiteAccent.Orange` | Flame Orange `#FF5B04`, Mirage text on it |
-| O-Draft | `SuiteAccent.Mirage` | Dark Slate Blue (Mirage) `#16232B`, white text on it |
-| O-Form | `SuiteAccent.Sea` | Deep Sea Green `#075056`, white text on it (planned app) |
-| O-CoreOp | `SuiteAccent.Sand` | Wild Sand `#E4EEF0`, Mirage text on it |
+| O-Studio | `SuiteAccent.Orange` | Ember `#B83E16`, white text on it |
+| O-Draft | `SuiteAccent.Mirage` | Midnight `#102C80`, white text on it |
+| O-Form | `SuiteAccent.Sea` | Grove `#166040`, white text on it (planned app) |
+| O-CoreOp | `SuiteAccent.Sand` | Dusk `#5630A0`, white text on it |
 
 The palette, the mark, the AI agent's orb and the type are described in `docs/BRANDING.md` in the O-Studio repository.
 
@@ -29,7 +29,7 @@ The palette, the mark, the AI agent's orb and the type are described in `docs/BR
 | `brand/`, `tools/Brand` | Marks; run `dotnet run --project tools/Brand -- brand` to redraw |
 | `Controls/FlexBar.cs` | A row of buttons that wraps when the page is narrow |
 
-Accent colours are for fills and marks. Use `SuiteAccentText` for text in the accent colour. Wild Sand is a very light accent: give a button filled with it a visible border (the O-CoreOp styles do), and use `SuiteAccentText` (a darker teal) for coloured text on white.
+Accent colours are for fills and marks. Use `SuiteAccentText` for text in the accent colour on a white surface. All four Light Conditions accents (Ember, Midnight, Grove, Dusk) are dark enough for white text and glyphs — no extra border is needed on a filled button for contrast.
 
 ## Using it
 Reference the project, then in `App.xaml`:

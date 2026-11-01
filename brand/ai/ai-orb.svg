@@ -1,16 +1,29 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 194 194" width="194" height="194" role="img" aria-label="AI agent">
   <title>AI agent</title>
-  <defs><filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="6"/></filter></defs>
-  <circle cx="97" cy="97" r="97" fill="#16232B"/>
-  <g fill="none" stroke-linecap="butt" transform="translate(97 97) scale(0.74) translate(-96 -96)">
-    <g filter="url(#glow)" opacity="0.6">
-      <animate attributeName="opacity" values="0.35;0.85;0.35" dur="4s" repeatCount="indefinite"/>
-      <path d="M107 27A69 69 0 0 0 107 165" stroke="#FF5B04" stroke-width="34"><animate attributeName="stroke" values="#FF5B04;#E4EEF0;#1496A0;#4F7C93;#FF5B04" dur="8s" repeatCount="indefinite"/></path>
-      <path d="M57 96A50 50 0 0 0 157 96" stroke="#E4EEF0" stroke-width="28"><animate attributeName="stroke" values="#E4EEF0;#1496A0;#4F7C93;#FF5B04;#E4EEF0" dur="8s" repeatCount="indefinite"/></path>
-      <circle cx="107" cy="96" r="18.5" stroke="#1496A0" stroke-width="21"><animate attributeName="stroke" values="#1496A0;#4F7C93;#FF5B04;#E4EEF0;#1496A0" dur="8s" repeatCount="indefinite"/></circle>    </g>
+  <defs>
+    <radialGradient id="gold" cx="35%" cy="30%" r="75%">
+      <stop offset="0" stop-color="#F0C840"/><stop offset="0.35" stop-color="#D4980E"/><stop offset="0.65" stop-color="#9B6000"/><stop offset="1" stop-color="#6B4000"/>
+    </radialGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="6"/></filter>
+  </defs>
+  <circle cx="97" cy="97" r="97" fill="url(#gold)">
+    <animate attributeName="opacity" values="0.92;1;0.92" dur="4s" repeatCount="indefinite"/>
+  </circle>
+  <g fill="none" stroke="#FFFFFF" stroke-linecap="butt" transform="translate(97 97) scale(0.74) translate(-96 -96)">
+    <g filter="url(#glow)" opacity="0.5">
+      <animate attributeName="opacity" values="0.25;0.7;0.25" dur="4s" repeatCount="indefinite"/>
+      <path d="M107 27A69 69 0 0 0 107 165" stroke-width="34"/>
+      <path d="M57 96A50 50 0 0 0 157 96" stroke-width="28"/>
+      <circle cx="107" cy="96" r="18.5" stroke-width="21"/>    </g>
     <g>
-      <path d="M107 27A69 69 0 0 0 107 165" stroke="#FF5B04" stroke-width="18"><animate attributeName="stroke" values="#FF5B04;#E4EEF0;#1496A0;#4F7C93;#FF5B04" dur="8s" repeatCount="indefinite"/></path>
-      <path d="M57 96A50 50 0 0 0 157 96" stroke="#E4EEF0" stroke-width="12"><animate attributeName="stroke" values="#E4EEF0;#1496A0;#4F7C93;#FF5B04;#E4EEF0" dur="8s" repeatCount="indefinite"/></path>
-      <circle cx="107" cy="96" r="18.5" stroke="#1496A0" stroke-width="5"><animate attributeName="stroke" values="#1496A0;#4F7C93;#FF5B04;#E4EEF0;#1496A0" dur="8s" repeatCount="indefinite"/></circle>    </g>
+      <path d="M107 27A69 69 0 0 0 107 165" stroke-width="18"/>
+      <path d="M57 96A50 50 0 0 0 157 96" stroke-width="12"/>
+      <circle cx="107" cy="96" r="18.5" stroke-width="5"/>    </g>
+  </g>
+  <g>
+    <g><animateTransform attributeName="transform" type="rotate" from="0 97 97" to="360 97 97" dur="10s" repeatCount="indefinite"/><circle cx="97" cy="6" r="3.0" fill="#F0C840"/></g>
+    <g><animateTransform attributeName="transform" type="rotate" from="90 97 97" to="450 97 97" dur="12s" repeatCount="indefinite"/><circle cx="97" cy="9" r="2.6" fill="#D4980E"/></g>
+    <g><animateTransform attributeName="transform" type="rotate" from="180 97 97" to="540 97 97" dur="14s" repeatCount="indefinite"/><circle cx="97" cy="12" r="2.2" fill="#E8B030"/></g>
+    <g><animateTransform attributeName="transform" type="rotate" from="270 97 97" to="630 97 97" dur="16s" repeatCount="indefinite"/><circle cx="97" cy="15" r="1.8" fill="#C88010"/></g>
   </g>
 </svg>

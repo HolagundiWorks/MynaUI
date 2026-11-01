@@ -1,7 +1,7 @@
 // Generates the per-app theme files from the templates, so there is one place to change how a theme is built.
 //   node tools/make-variants.mjs
-// Each app has an accent from the suite palette (docs/BRANDING.md in O-Studio): O-Studio Flame Orange, O-Draft Dark Slate Blue (Mirage),
-// O-Form Deep Sea Green, O-CoreOp Wild Sand. The accents are in Themes/SuiteAccent.<Name>.xaml.
+// Each app has an accent from the suite palette (docs/BRANDING.md in O-Studio): O-Studio Ember, O-Draft Midnight,
+// O-Form Grove, O-CoreOp Dusk. The accents are in Themes/SuiteAccent.<Name>.xaml.
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
@@ -9,10 +9,10 @@ import { fileURLToPath } from "url";
 const root = path.join(path.dirname(fileURLToPath(import.meta.url)), "..", "O.Ui", "Themes");
 
 const accents = {
-  Orange: { app: "O-Studio", accent: "#FF5B04", hover: "#F25400", pressed: "#E64E00", text: "#A83A00", wash: "#FFDFCB", on: "#16232B" },
-  Mirage: { app: "O-Draft", accent: "#16232B", hover: "#22343F", pressed: "#2E4452", text: "#16232B", wash: "#D5DEE2", on: "#FFFFFF" },
-  Sea: { app: "O-Form", accent: "#075056", hover: "#0A6168", pressed: "#0D737B", text: "#075056", wash: "#CFE5E7", on: "#FFFFFF" },
-  Sand: { app: "O-CoreOp", accent: "#E4EEF0", hover: "#D6E4E7", pressed: "#C8D9DD", text: "#3B6670", wash: "#E4EEF0", on: "#16232B" },
+  Orange: { app: "O-Studio", accent: "#B83E16", hover: "#A03212", pressed: "#8C2A10", text: "#B83E16", wash: "#F8E8E0", on: "#FFFFFF" },
+  Mirage: { app: "O-Draft", accent: "#102C80", hover: "#0C2470", pressed: "#081C60", text: "#102C80", wash: "#E4E8F8", on: "#FFFFFF" },
+  Sea: { app: "O-Form", accent: "#166040", hover: "#125236", pressed: "#0E422C", text: "#166040", wash: "#E4F0EA", on: "#FFFFFF" },
+  Sand: { app: "O-CoreOp", accent: "#5630A0", hover: "#4A289A", pressed: "#3E2080", text: "#5630A0", wash: "#EEE8F8", on: "#FFFFFF" },
 };
 
 for (const [name, a] of Object.entries(accents)) {

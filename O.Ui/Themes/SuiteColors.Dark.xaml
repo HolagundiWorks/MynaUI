@@ -16,9 +16,11 @@
     <Color x:Key="SuiteEdgeStrong">#708090</Color>
     <Color x:Key="SuiteHover">#2A3140</Color>
     <Color x:Key="SuiteDanger">#F87171</Color>
-    <!-- Dark selection wash (replaces light SuiteAccentWash from the accent file). -->
-    <Color x:Key="SuiteAccentWash">#2A3F66</Color>
-    <!-- AccentText dark override: SuiteAccent.Orange defines #A83A00 for light mode only.
-         That value fails all dark backgrounds (2.57:1 on DBG). Override here for dark. -->
-    <Color x:Key="SuiteAccentText">#FF7040</Color>
+    <!-- Dark selection wash (replaces light SuiteAccentWash from the accent file).
+         Note: each app ideally overrides this in its own SuiteDark.*.xaml; this fallback suits Midnight (O-Draft). -->
+    <Color x:Key="SuiteAccentWash">#1C2A50</Color>
+    <!-- AccentText dark override for O-Studio / Ember (#B83E16 fails dark BG at 2.74:1).
+         Lightened to #E0703A: 5.14:1 on dark background ✓.
+         Other apps should override SuiteAccentText in their own SuiteDark.*.xaml. -->
+    <Color x:Key="SuiteAccentText">#E0703A</Color>
 </ResourceDictionary>

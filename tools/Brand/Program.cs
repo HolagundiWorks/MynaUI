@@ -8,22 +8,23 @@ using System.Drawing.Imaging;
 using System.Drawing.Text;
 
 var output = args.Length > 0 ? args[0] : Path.Combine(AppContext.BaseDirectory, "brand");
-// The suite palette. The glow tones are the four colours as they read on a Mirage disc, for the AI orb.
-var mirage = ColorTranslator.FromHtml("#16232B"); // Dark Slate Blue
-var flame = ColorTranslator.FromHtml("#FF5B04");  // Flame Orange
-var sea = ColorTranslator.FromHtml("#075056");    // Deep Sea Green
-var sand = ColorTranslator.FromHtml("#E4EEF0");   // Wild Sand
+// The suite palette. The AI orb uses the four gold gradient stops.
+var mirage = ColorTranslator.FromHtml("#102C80"); // Midnight (O-Draft)
+var flame = ColorTranslator.FromHtml("#B83E16");  // Ember (O-Studio)
+var sea = ColorTranslator.FromHtml("#166040");    // Grove (O-Form)
+var sand = ColorTranslator.FromHtml("#5630A0");   // Dusk (O-CoreOp)
 var white = Color.White;
 var ink = mirage;
-var inkSoft = ColorTranslator.FromHtml("#4A5A63");
-var glow = new[] { "#FF5B04", "#E4EEF0", "#1496A0", "#4F7C93" }.Select(ColorTranslator.FromHtml).ToArray();
+var inkSoft = ColorTranslator.FromHtml("#3E56A0");
+// The AI agent is gold: a radial gradient disc (upper-left highlight) with the mark in white.
+var glow = new[] { "#F0C840", "#D4980E", "#9B6000", "#6B4000" }.Select(ColorTranslator.FromHtml).ToArray();
 
 var apps = new (string Folder, string Name, Color Plate, Color Glyph)[]
 {
     ("studio", "O-Studio", flame, white),
     ("draft", "O-Draft", mirage, white),
     ("form", "O-Form", sea, white),
-    ("coreop", "O-CoreOp", sand, mirage),
+    ("coreop", "O-CoreOp", sand, white),
 };
 
 foreach (var (folder, name, plate, glyph) in apps)
@@ -152,8 +153,8 @@ static Bitmap Lockup(string name, Color plate, Color glyph)
     using var title = new Font("Segoe UI Semibold", 150, FontStyle.Regular, GraphicsUnit.Pixel);
     using var line = new Font("Segoe UI", 52, FontStyle.Regular, GraphicsUnit.Pixel);
     using var small = new Font("Segoe UI Semibold", 44, FontStyle.Regular, GraphicsUnit.Pixel);
-    using var inkBrush = new SolidBrush(ColorTranslator.FromHtml("#16232B"));
-    using var softBrush = new SolidBrush(ColorTranslator.FromHtml("#4A5A63"));
+    using var inkBrush = new SolidBrush(ColorTranslator.FromHtml("#102C80"));
+    using var softBrush = new SolidBrush(ColorTranslator.FromHtml("#3E56A0"));
     g.DrawString(name, title, inkBrush, 650, 150);
     g.DrawString("Open Source Architecture Suit", line, softBrush, 660, 360);
     g.DrawString("An app of the O-Studio suite", small, softBrush, 660, 440);
@@ -193,56 +194,79 @@ static void Ico(string path, Color plate, Color glyph)
         w.Write(image);
 }
 
-// The AI agent: the logo itself on a round Mirage tile, its three circles (the big C, the bowl, the ring) each in a different colour of the suite. Still,
-// the circles are Flame Orange, Wild Sand and Deep Sea Green on the Mirage disc, so all four colours are in it; in the app they pass the colours on, two
-// seconds a step. ai-orb.svg is the animated master (every circle wears all four colours in eight seconds, always three different ones at a time).
-static void StrokeMark(Graphics g, float k, Color c1, Color c2, Color c3, float extra)
+// The AI agent: the suite mark in white on a molten-gold disc (radial gradient, highlight upper left). In the app the disc and halo breathe and gold
+// particles orbit; ai-orb.svg is the animated master.
+static void StrokeMark(Graphics g, float k, Color c, float extra)
 {
     float cx = 107 * k, cy = 96 * k;
-    using var p1 = new Pen(c1, (18 + extra) * k) { StartCap = LineCap.Flat, EndCap = LineCap.Flat };
-    using var p2 = new Pen(c2, (12 + extra) * k) { StartCap = LineCap.Flat, EndCap = LineCap.Flat };
-    using var p3 = new Pen(c3, (5 + extra) * k);
+    using var p1 = new Pen(c, (18 + extra) * k) { StartCap = LineCap.Flat, EndCap = LineCap.Flat };
+    using var p2 = new Pen(c, (12 + extra) * k) { StartCap = LineCap.Flat, EndCap = LineCap.Flat };
+    using var p3 = new Pen(c, (5 + extra) * k);
     g.DrawArc(p1, cx - 69 * k, cy - 69 * k, 138 * k, 138 * k, 90, 180);
     g.DrawArc(p2, cx - 50 * k, cy - 50 * k, 100 * k, 100 * k, 0, 180);
     g.DrawEllipse(p3, cx - 18.5f * k, cy - 18.5f * k, 37 * k, 37 * k);
 }
 
-static Bitmap Orb(int size, Color disc, Color[] glow)
+// gold[0..3] are the gradient stops: highlight, mid gold, deep gold, dark amber (0 %, 35 %, 65 %, 100 % from the upper-left highlight).
+static Bitmap Orb(int size, Color unused, Color[] gold)
 {
     var bitmap = NewBitmap(size, size);
     using var g = Canvas(bitmap);
     var k = size / 194f;
-    using (var brush = new SolidBrush(disc))
-        g.FillEllipse(brush, 0, 0, size, size);
+    using (var disc = new GraphicsPath())
+    {
+        disc.AddEllipse(0, 0, size, size);
+        using var brush = new PathGradientBrush(disc)
+        {
+            CenterPoint = new PointF(size * 0.35f, size * 0.30f),
+            InterpolationColors = new ColorBlend
+            {
+                Positions = new[] { 0f, 0.35f, 0.65f, 1f },
+                Colors = new[] { gold[3], gold[2], gold[1], gold[0] },
+            },
+        };
+        g.FillPath(brush, disc);
+    }
     // the mark fills a little less than the disc: scaled to 74 % about its centre (96, 96)
     g.TranslateTransform(97 * k, 97 * k);
     g.ScaleTransform(0.74f, 0.74f);
     g.TranslateTransform(-96 * k, -96 * k);
-    StrokeMark(g, k, Color.FromArgb(70, glow[0]), Color.FromArgb(70, glow[1]), Color.FromArgb(70, glow[2]), 16);
-    StrokeMark(g, k, glow[0], glow[1], glow[2], 0);
+    StrokeMark(g, k, Color.FromArgb(60, Color.White), 14);
+    StrokeMark(g, k, Color.White, 0);
     return bitmap;
 }
 
-static string OrbSvg(Color disc, Color[] glow)
+static string OrbSvg(Color unused, Color[] gold)
 {
-    string Cycle(int offset) => string.Join(";", Enumerable.Range(0, 5).Select(i => Hex(glow[(offset + i) % 4])));
-    string Anim(int offset) => $"<animate attributeName=\"stroke\" values=\"{Cycle(offset)}\" dur=\"8s\" repeatCount=\"indefinite\"/>";
-    string Circles(double extra, int dim) => $"""
-      <path d="M107 27A69 69 0 0 0 107 165" stroke="{Hex(glow[0])}" stroke-width="{18 + extra}">{Anim(0)}</path>
-      <path d="M57 96A50 50 0 0 0 157 96" stroke="{Hex(glow[1])}" stroke-width="{12 + extra}">{Anim(1)}</path>
-      <circle cx="107" cy="96" r="18.5" stroke="{Hex(glow[2])}" stroke-width="{5 + extra}">{Anim(2)}</circle>
+    string[] dots = { "#F0C840", "#D4980E", "#E8B030", "#C88010" };
+    var particles = string.Join("\n", dots.Select((c, i) =>
+        $"    <g><animateTransform attributeName=\"transform\" type=\"rotate\" from=\"{i * 90} 97 97\" to=\"{i * 90 + 360} 97 97\" dur=\"{10 + i * 2}s\" repeatCount=\"indefinite\"/><circle cx=\"97\" cy=\"{6 + i * 3}\" r=\"{3 - i * 0.4:0.0}\" fill=\"{c}\"/></g>"));
+    string Circles(double extra) => $"""
+      <path d="M107 27A69 69 0 0 0 107 165" stroke-width="{18 + extra}"/>
+      <path d="M57 96A50 50 0 0 0 157 96" stroke-width="{12 + extra}"/>
+      <circle cx="107" cy="96" r="18.5" stroke-width="{5 + extra}"/>
 """;
     return $"""
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 194 194" width="194" height="194" role="img" aria-label="AI agent">
   <title>AI agent</title>
-  <defs><filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="6"/></filter></defs>
-  <circle cx="97" cy="97" r="97" fill="{Hex(disc)}"/>
-  <g fill="none" stroke-linecap="butt" transform="translate(97 97) scale(0.74) translate(-96 -96)">
-    <g filter="url(#glow)" opacity="0.6">
-      <animate attributeName="opacity" values="0.35;0.85;0.35" dur="4s" repeatCount="indefinite"/>
-{Circles(16, 1)}    </g>
+  <defs>
+    <radialGradient id="gold" cx="35%" cy="30%" r="75%">
+      <stop offset="0" stop-color="{Hex(gold[0])}"/><stop offset="0.35" stop-color="{Hex(gold[1])}"/><stop offset="0.65" stop-color="{Hex(gold[2])}"/><stop offset="1" stop-color="{Hex(gold[3])}"/>
+    </radialGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="6"/></filter>
+  </defs>
+  <circle cx="97" cy="97" r="97" fill="url(#gold)">
+    <animate attributeName="opacity" values="0.92;1;0.92" dur="4s" repeatCount="indefinite"/>
+  </circle>
+  <g fill="none" stroke="#FFFFFF" stroke-linecap="butt" transform="translate(97 97) scale(0.74) translate(-96 -96)">
+    <g filter="url(#glow)" opacity="0.5">
+      <animate attributeName="opacity" values="0.25;0.7;0.25" dur="4s" repeatCount="indefinite"/>
+{Circles(16)}    </g>
     <g>
-{Circles(0, 0)}    </g>
+{Circles(0)}    </g>
+  </g>
+  <g>
+{particles}
   </g>
 </svg>
 """;
@@ -261,13 +285,13 @@ static Bitmap Sheet((string Folder, string Name, Color Plate, Color Glyph)[] app
     using var inkBrush = new SolidBrush(mirage);
     using var dimBrush = new SolidBrush(ColorTranslator.FromHtml("#5C6B73"));
     g.DrawString("O-Studio suite brand", title, inkBrush, 60, 36);
-    g.DrawString("One mark. Four colours. Each app wears one; the AI agent wears all four.", text, dimBrush, 64, 112);
+    g.DrawString("One mark. Four colours. Each app wears one; the AI agent wears gold.", text, dimBrush, 64, 112);
     var swatches = new (string Name, string App, Color Colour, Color On)[]
     {
-        ("Dark Slate Blue (Mirage)", "O-Draft", mirage, Color.White),
-        ("Flame Orange", "O-Studio", flame, Color.White),
-        ("Deep Sea Green", "O-Form", sea, Color.White),
-        ("Wild Sand", "O-CoreOp", sand, mirage),
+        ("Midnight", "O-Draft", mirage, Color.White),
+        ("Ember", "O-Studio", flame, Color.White),
+        ("Grove", "O-Form", sea, Color.White),
+        ("Dusk", "O-CoreOp", sand, Color.White),
     };
     for (var i = 0; i < swatches.Length; i++)
     {
@@ -277,11 +301,6 @@ static Bitmap Sheet((string Folder, string Name, Color Plate, Color Glyph)[] app
         using (var fill = new SolidBrush(colour))
         {
             g.FillPath(fill, path);
-            if (colour == sand)
-            {
-                using var edge = new Pen(ColorTranslator.FromHtml("#C9D8DC"));
-                g.DrawPath(edge, path);
-            }
         }
 
         using var onBrush = new SolidBrush(on);
@@ -302,7 +321,7 @@ static Bitmap Sheet((string Folder, string Name, Color Plate, Color Glyph)[] app
     g.DrawString("The AI agent", head, inkBrush, 60, 780);
     using (var orb = Orb(256, mirage, glow))
         g.DrawImage(orb, 60, 830, 190, 190);
-    g.DrawString("The ring of the mark, lit. It turns through Flame Orange, Wild Sand, Deep Sea Green and Mirage\n(as glow tones on a Mirage disc) while the agent runs; grey and still when it does not.\nai/ai-orb.svg is the animated master.", text, dimBrush, 280, 860);
+    g.DrawString("The suite mark in white on a molten-gold disc. While the agent runs the disc and halo breathe and\ngold particles orbit; waiting is half strength, off is nearly dark. ai/ai-orb.svg is the animated master.", text, dimBrush, 280, 860);
     g.DrawString("Type: app names in Apfel Grotezk, display in Mazius Display (both SIL OFL, bundled in O.Ui). This sheet is drawn in Segoe UI.", mono, dimBrush, 60, 1030);
     return bitmap;
 }
