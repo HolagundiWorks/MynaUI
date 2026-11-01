@@ -193,8 +193,20 @@ static void Ico(string path, Color plate, Color glyph)
         w.Write(image);
 }
 
-// The AI agent: the ring of the mark, lit, turning through the four colours (as glow tones) on a Mirage disc. Still, the orb is four 90 degree arcs
-// with a wider, fainter pass behind them for the glow; ai-orb.svg is the animated master (the arcs turn once every eight seconds).
+// The AI agent: the logo itself on a round Mirage tile, its three circles (the big C, the bowl, the ring) each in a different colour of the suite. Still,
+// the circles are Flame Orange, Wild Sand and Deep Sea Green on the Mirage disc, so all four colours are in it; in the app they pass the colours on, two
+// seconds a step. ai-orb.svg is the animated master (every circle wears all four colours in eight seconds, always three different ones at a time).
+static void StrokeMark(Graphics g, float k, Color c1, Color c2, Color c3, float extra)
+{
+    float cx = 107 * k, cy = 96 * k;
+    using var p1 = new Pen(c1, (18 + extra) * k) { StartCap = LineCap.Flat, EndCap = LineCap.Flat };
+    using var p2 = new Pen(c2, (12 + extra) * k) { StartCap = LineCap.Flat, EndCap = LineCap.Flat };
+    using var p3 = new Pen(c3, (5 + extra) * k);
+    g.DrawArc(p1, cx - 69 * k, cy - 69 * k, 138 * k, 138 * k, 90, 180);
+    g.DrawArc(p2, cx - 50 * k, cy - 50 * k, 100 * k, 100 * k, 0, 180);
+    g.DrawEllipse(p3, cx - 18.5f * k, cy - 18.5f * k, 37 * k, 37 * k);
+}
+
 static Bitmap Orb(int size, Color disc, Color[] glow)
 {
     var bitmap = NewBitmap(size, size);
@@ -202,42 +214,35 @@ static Bitmap Orb(int size, Color disc, Color[] glow)
     var k = size / 194f;
     using (var brush = new SolidBrush(disc))
         g.FillEllipse(brush, 0, 0, size, size);
-    for (var pass = 0; pass < 2; pass++)
-    {
-        for (var i = 0; i < 4; i++)
-        {
-            var colour = pass == 0 ? Color.FromArgb(70, glow[i]) : glow[i];
-            using var pen = new Pen(colour, (pass == 0 ? 26 : 13) * k) { StartCap = LineCap.Flat, EndCap = LineCap.Flat };
-            var r = 46 * k;
-            g.DrawArc(pen, 97 * k - r, 97 * k - r, 2 * r, 2 * r, -90 + 90 * i, 90);
-        }
-    }
-
+    // the mark fills a little less than the disc: scaled to 74 % about its centre (96, 96)
+    g.TranslateTransform(97 * k, 97 * k);
+    g.ScaleTransform(0.74f, 0.74f);
+    g.TranslateTransform(-96 * k, -96 * k);
+    StrokeMark(g, k, Color.FromArgb(70, glow[0]), Color.FromArgb(70, glow[1]), Color.FromArgb(70, glow[2]), 16);
+    StrokeMark(g, k, glow[0], glow[1], glow[2], 0);
     return bitmap;
 }
 
 static string OrbSvg(Color disc, Color[] glow)
 {
-    var arcs = new System.Text.StringBuilder();
-    for (var i = 0; i < 4; i++)
-    {
-        double a = (-90 + 90 * i) * Math.PI / 180, b = (-90 + 90 * (i + 1)) * Math.PI / 180;
-        arcs.Append(System.Globalization.CultureInfo.InvariantCulture, $"      <path d=\"M{97 + 46 * Math.Cos(a):0.##} {97 + 46 * Math.Sin(a):0.##}A46 46 0 0 1 {97 + 46 * Math.Cos(b):0.##} {97 + 46 * Math.Sin(b):0.##}\" stroke=\"{Hex(glow[i])}\"/>\n");
-    }
-
+    string Cycle(int offset) => string.Join(";", Enumerable.Range(0, 5).Select(i => Hex(glow[(offset + i) % 4])));
+    string Anim(int offset) => $"<animate attributeName=\"stroke\" values=\"{Cycle(offset)}\" dur=\"8s\" repeatCount=\"indefinite\"/>";
+    string Circles(double extra, int dim) => $"""
+      <path d="M107 27A69 69 0 0 0 107 165" stroke="{Hex(glow[0])}" stroke-width="{18 + extra}">{Anim(0)}</path>
+      <path d="M57 96A50 50 0 0 0 157 96" stroke="{Hex(glow[1])}" stroke-width="{12 + extra}">{Anim(1)}</path>
+      <circle cx="107" cy="96" r="18.5" stroke="{Hex(glow[2])}" stroke-width="{5 + extra}">{Anim(2)}</circle>
+""";
     return $"""
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 194 194" width="194" height="194" role="img" aria-label="AI agent">
   <title>AI agent</title>
-  <defs><filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="7"/></filter></defs>
+  <defs><filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="6"/></filter></defs>
   <circle cx="97" cy="97" r="97" fill="{Hex(disc)}"/>
-  <g fill="none" stroke-width="13" stroke-linecap="butt">
-    <g filter="url(#glow)" opacity="0.85">
-      <animateTransform attributeName="transform" type="rotate" from="0 97 97" to="360 97 97" dur="8s" repeatCount="indefinite"/>
-      <animate attributeName="opacity" values="0.55;0.95;0.55" dur="4s" repeatCount="indefinite"/>
-{arcs}    </g>
+  <g fill="none" stroke-linecap="butt" transform="translate(97 97) scale(0.74) translate(-96 -96)">
+    <g filter="url(#glow)" opacity="0.6">
+      <animate attributeName="opacity" values="0.35;0.85;0.35" dur="4s" repeatCount="indefinite"/>
+{Circles(16, 1)}    </g>
     <g>
-      <animateTransform attributeName="transform" type="rotate" from="0 97 97" to="360 97 97" dur="8s" repeatCount="indefinite"/>
-{arcs}    </g>
+{Circles(0, 0)}    </g>
   </g>
 </svg>
 """;
