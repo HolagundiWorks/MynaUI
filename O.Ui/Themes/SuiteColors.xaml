@@ -3,7 +3,9 @@
   Suite neutrals — cool soft-UI glass aligned with O-Draft ColorTokens (AppBackground #E4EAF2).
   Each app adds its own accent (SuiteAccent.Orange, .Blue or .Black.xaml).
   Accent colours are for fills and marks; text in the accent colour uses SuiteAccentText.
-  Contrast on white: ink ~15.8, ink soft ~7.0 (AA for body).
+  Contrast on white: ink ~15.8, ink soft ~4.8 (AA ≥4.5:1 — WCAG 1.4.3).
+  ink soft on BG (#E4EAF2) 4.52:1 ✓ on Sidebar (#EEF2F8) 4.87:1 ✓.
+  EdgeStrong: 3.28:1 on BG ✓, 3.97:1 on Surface ✓ (WCAG 1.4.11 non-text ≥3:1).
 -->
 <ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -12,9 +14,11 @@
     <Color x:Key="SuiteSidebar">#EEF2F8</Color>
     <Color x:Key="SuiteSurface">#FFFFFF</Color>
     <Color x:Key="SuiteInk">#1A2332</Color>
-    <Color x:Key="SuiteInkSoft">#64748B</Color>
+    <!-- Was #64748B (3.93:1 on BG — WCAG 1.4.3 fail). Darkened for ≥4.5:1 on all backgrounds. -->
+    <Color x:Key="SuiteInkSoft">#546B88</Color>
     <Color x:Key="SuiteEdge">#D8DEE8</Color>
-    <Color x:Key="SuiteEdgeStrong">#94A3B8</Color>
+    <!-- Was #94A3B8 (2.12:1 on BG — WCAG 1.4.11 fail). Darkened for ≥3:1 non-text contrast. -->
+    <Color x:Key="SuiteEdgeStrong">#788090</Color>
     <Color x:Key="SuiteHover">#F1F5FA</Color>
     <Color x:Key="SuiteDanger">#C42B1C</Color>
 </ResourceDictionary>

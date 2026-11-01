@@ -78,47 +78,47 @@
                 <Setter Property="CornerRadius" Value="4"/>
             </Style>
             <Style x:Key="PageTitleStyle" TargetType="TextBlock" BasedOn="{StaticResource TitleTextBlockStyle}">
-                <Setter Property="FontFamily" Value="Segoe UI Variable, Segoe UI"/>
+                <Setter Property="FontFamily" Value="Segoe UI Variable, Segoe UI, Nirmala UI, Noto Sans Devanagari"/>
                 <Setter Property="FontSize" Value="18"/>
                 <Setter Property="FontWeight" Value="SemiBold"/>
                 <Setter Property="Foreground" Value="{ThemeResource TextPrimaryBrush}"/>
             </Style>
             <Style x:Key="SectionTitleStyle" TargetType="TextBlock" BasedOn="{StaticResource SubtitleTextBlockStyle}">
-                <Setter Property="FontFamily" Value="Segoe UI Variable, Segoe UI"/>
+                <Setter Property="FontFamily" Value="Segoe UI Variable, Segoe UI, Nirmala UI, Noto Sans Devanagari"/>
                 <Setter Property="FontSize" Value="13"/>
                 <Setter Property="FontWeight" Value="SemiBold"/>
                 <Setter Property="Foreground" Value="{ThemeResource TextPrimaryBrush}"/>
                 <Setter Property="Margin" Value="0,8,0,0"/>
             </Style>
             <Style x:Key="BodyStyle" TargetType="TextBlock" BasedOn="{StaticResource BodyTextBlockStyle}">
-                <Setter Property="FontFamily" Value="Segoe UI Variable, Segoe UI"/>
+                <Setter Property="FontFamily" Value="Segoe UI Variable, Segoe UI, Nirmala UI, Noto Sans Devanagari"/>
                 <Setter Property="FontSize" Value="12"/>
                 <Setter Property="Foreground" Value="{ThemeResource TextPrimaryBrush}"/>
             </Style>
             <Style x:Key="SecondaryStyle" TargetType="TextBlock" BasedOn="{StaticResource BodyTextBlockStyle}">
-                <Setter Property="FontFamily" Value="Segoe UI Variable, Segoe UI"/>
+                <Setter Property="FontFamily" Value="Segoe UI Variable, Segoe UI, Nirmala UI, Noto Sans Devanagari"/>
                 <Setter Property="FontSize" Value="12"/>
                 <Setter Property="Foreground" Value="{ThemeResource TextSecondaryBrush}"/>
             </Style>
             <Style x:Key="CaptionStyle" TargetType="TextBlock" BasedOn="{StaticResource CaptionTextBlockStyle}">
-                <Setter Property="FontFamily" Value="Segoe UI Variable, Segoe UI"/>
+                <Setter Property="FontFamily" Value="Segoe UI Variable, Segoe UI, Nirmala UI, Noto Sans Devanagari"/>
                 <Setter Property="FontSize" Value="11"/>
                 <Setter Property="Foreground" Value="{ThemeResource TextSecondaryBrush}"/>
             </Style>
             <Style x:Key="MetricValueStyle" TargetType="TextBlock" BasedOn="{StaticResource TitleTextBlockStyle}">
-                <Setter Property="FontFamily" Value="Segoe UI Variable, Segoe UI"/>
+                <Setter Property="FontFamily" Value="Segoe UI Variable, Segoe UI, Nirmala UI, Noto Sans Devanagari"/>
                 <Setter Property="FontSize" Value="22"/>
                 <Setter Property="FontWeight" Value="SemiBold"/>
                 <Setter Property="Foreground" Value="{ThemeResource TextPrimaryBrush}"/>
             </Style>
             <Style x:Key="TableHeaderStyle" TargetType="TextBlock" BasedOn="{StaticResource CaptionTextBlockStyle}">
-                <Setter Property="FontFamily" Value="Segoe UI Variable, Segoe UI"/>
+                <Setter Property="FontFamily" Value="Segoe UI Variable, Segoe UI, Nirmala UI, Noto Sans Devanagari"/>
                 <Setter Property="FontSize" Value="11"/>
                 <Setter Property="FontWeight" Value="SemiBold"/>
                 <Setter Property="Foreground" Value="{ThemeResource TextSecondaryBrush}"/>
             </Style>
             <Style x:Key="TableCellStyle" TargetType="TextBlock" BasedOn="{StaticResource BodyTextBlockStyle}">
-                <Setter Property="FontFamily" Value="Segoe UI Variable, Segoe UI"/>
+                <Setter Property="FontFamily" Value="Segoe UI Variable, Segoe UI, Nirmala UI, Noto Sans Devanagari"/>
                 <Setter Property="FontSize" Value="12"/>
                 <Setter Property="Foreground" Value="{ThemeResource TextPrimaryBrush}"/>
             </Style>
@@ -136,28 +136,28 @@
                 <Setter Property="MinHeight" Value="26"/>
                 <Setter Property="Padding" Value="12,2"/>
                 <Setter Property="CornerRadius" Value="4"/>
-                <Setter Property="FontFamily" Value="Segoe UI Variable, Segoe UI"/>
+                <Setter Property="FontFamily" Value="Segoe UI Variable, Segoe UI, Nirmala UI, Noto Sans Devanagari"/>
                 <Setter Property="FontSize" Value="12"/>
             </Style>
             <Style TargetType="TextBox" BasedOn="{StaticResource DefaultTextBoxStyle}">
                 <Setter Property="MinHeight" Value="26"/>
                 <Setter Property="HorizontalAlignment" Value="Stretch"/>
                 <Setter Property="CornerRadius" Value="4"/>
-                <Setter Property="FontFamily" Value="Segoe UI Variable, Segoe UI"/>
+                <Setter Property="FontFamily" Value="Segoe UI Variable, Segoe UI, Nirmala UI, Noto Sans Devanagari"/>
                 <Setter Property="FontSize" Value="12"/>
             </Style>
             <Style TargetType="PasswordBox" BasedOn="{StaticResource DefaultPasswordBoxStyle}">
                 <Setter Property="MinHeight" Value="26"/>
                 <Setter Property="HorizontalAlignment" Value="Stretch"/>
                 <Setter Property="CornerRadius" Value="4"/>
-                <Setter Property="FontFamily" Value="Segoe UI Variable, Segoe UI"/>
+                <Setter Property="FontFamily" Value="Segoe UI Variable, Segoe UI, Nirmala UI, Noto Sans Devanagari"/>
                 <Setter Property="FontSize" Value="12"/>
             </Style>
             <Style TargetType="ComboBox" BasedOn="{StaticResource DefaultComboBoxStyle}">
                 <Setter Property="MinHeight" Value="26"/>
                 <Setter Property="HorizontalAlignment" Value="Stretch"/>
                 <Setter Property="CornerRadius" Value="4"/>
-                <Setter Property="FontFamily" Value="Segoe UI Variable, Segoe UI"/>
+                <Setter Property="FontFamily" Value="Segoe UI Variable, Segoe UI, Nirmala UI, Noto Sans Devanagari"/>
                 <Setter Property="FontSize" Value="12"/>
             </Style>
             <!-- A raised block of related content: a summary, a form, a panel -->
@@ -186,7 +186,7 @@
                 <Setter Property="Padding" Value="12,2"/>
                 <Setter Property="MinHeight" Value="26"/>
                 <Setter Property="CornerRadius" Value="4"/>
-                <Setter Property="FontFamily" Value="Segoe UI Variable, Segoe UI"/>
+                <Setter Property="FontFamily" Value="Segoe UI Variable, Segoe UI, Nirmala UI, Noto Sans Devanagari"/>
                 <Setter Property="FontSize" Value="12"/>
                 <Setter Property="FontWeight" Value="SemiBold"/>
                 <Setter Property="HorizontalAlignment" Value="Left"/>
