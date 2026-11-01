@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generated from templates/SuiteNavigation.template.xaml by tools/make-variants.mjs. How the navigation pane marks the page you are on: ink indicator, the accent wash. Set on the NavigationView itself (see SuiteNavigation.Apply). -->
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+        <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="ms-appx:///O.Ui/Themes/SuiteColors.xaml"/>
+        <ResourceDictionary Source="ms-appx:///O.Ui/Themes/SuiteAccent.Sea.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+    <SolidColorBrush x:Key="NavigationViewSelectionIndicatorForeground" Color="{StaticResource SuiteInk}"/>
+    <SolidColorBrush x:Key="NavigationViewItemBackgroundSelected" Color="{StaticResource SuiteAccentWash}"/>
+    <SolidColorBrush x:Key="NavigationViewItemBackgroundSelectedPointerOver" Color="{StaticResource SuiteAccent}"/>
+    <SolidColorBrush x:Key="NavigationViewItemBackgroundSelectedPressed" Color="{StaticResource SuiteAccentHover}"/>
+    <SolidColorBrush x:Key="NavigationViewItemBackgroundPointerOver" Color="{StaticResource SuiteHover}"/>
+    <SolidColorBrush x:Key="NavigationViewItemForegroundSelected" Color="{StaticResource SuiteInk}"/>
+    <SolidColorBrush x:Key="NavigationViewItemForegroundSelectedPointerOver" Color="{StaticResource SuiteOnAccent}"/>
+    <SolidColorBrush x:Key="NavigationViewItemForegroundSelectedPressed" Color="{StaticResource SuiteOnAccent}"/>
+    <SolidColorBrush x:Key="NavigationViewDefaultPaneBackground" Color="{StaticResource SuiteSidebar}"/>
+    <SolidColorBrush x:Key="NavigationViewExpandedPaneBackground" Color="{StaticResource SuiteSidebar}"/>
+    <SolidColorBrush x:Key="NavigationViewContentBackground" Color="{StaticResource SuiteBackground}"/>
+</ResourceDictionary>

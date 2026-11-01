@@ -6,11 +6,14 @@ public enum SuiteApp
     /// <summary>O-Studio: the office. Orange.</summary>
     Studio,
 
-    /// <summary>O-CoreOp: quantities and costing. Blue.</summary>
+    /// <summary>O-CoreOp: quantities and costing. Wild Sand.</summary>
     Metra,
 
-    /// <summary>O-Draft: drafting. Black.</summary>
+    /// <summary>O-Draft: drafting. Dark Slate Blue (Mirage).</summary>
     Draft,
+
+    /// <summary>O-Form: 3D and BIM form. Deep Sea Green. Planned.</summary>
+    Form,
 }
 
 /// <summary>The names of the suite and its apps, so every app and document spells them the same way.</summary>
@@ -23,6 +26,7 @@ public static class SuiteBrand
     {
         SuiteApp.Studio => "O-Studio",
         SuiteApp.Metra => "O-CoreOp",
+        SuiteApp.Form => "O-Form",
         _ => "O-Draft",
     };
 
@@ -31,6 +35,7 @@ public static class SuiteBrand
     {
         SuiteApp.Studio => "Office and project management",
         SuiteApp.Metra => "Quantities, estimates and billing",
+        SuiteApp.Form => "3D and BIM form",
         _ => "Drafting",
     };
 
@@ -38,7 +43,8 @@ public static class SuiteBrand
     public static string Accent(SuiteApp app) => app switch
     {
         SuiteApp.Studio => "Orange",
-        SuiteApp.Metra => "Blue",
-        _ => "Black",
+        SuiteApp.Metra => "Sand",
+        SuiteApp.Form => "Sea",
+        _ => "Mirage",
     };
 }

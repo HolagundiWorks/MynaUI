@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 194 194" width="194" height="194" role="img" aria-label="AI agent">
+  <title>AI agent</title>
+  <defs><filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="7"/></filter></defs>
+  <circle cx="97" cy="97" r="97" fill="#16232B"/>
+  <g fill="none" stroke-width="13" stroke-linecap="butt">
+    <g filter="url(#glow)" opacity="0.85">
+      <animateTransform attributeName="transform" type="rotate" from="0 97 97" to="360 97 97" dur="8s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.55;0.95;0.55" dur="4s" repeatCount="indefinite"/>
+      <path d="M97 51A46 46 0 0 1 143 97" stroke="#FF5B04"/>
+      <path d="M143 97A46 46 0 0 1 97 143" stroke="#E4EEF0"/>
+      <path d="M97 143A46 46 0 0 1 51 97" stroke="#1496A0"/>
+      <path d="M51 97A46 46 0 0 1 97 51" stroke="#4F7C93"/>
+    </g>
+    <g>
+      <animateTransform attributeName="transform" type="rotate" from="0 97 97" to="360 97 97" dur="8s" repeatCount="indefinite"/>
+      <path d="M97 51A46 46 0 0 1 143 97" stroke="#FF5B04"/>
+      <path d="M143 97A46 46 0 0 1 97 143" stroke="#E4EEF0"/>
+      <path d="M97 143A46 46 0 0 1 51 97" stroke="#1496A0"/>
+      <path d="M51 97A46 46 0 0 1 97 51" stroke="#4F7C93"/>
+    </g>
+  </g>
+</svg>

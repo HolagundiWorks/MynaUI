@@ -1,57 +1,69 @@
 // Draws the suite's marks and writes PNG, ICO and lockup files for each app:   dotnet run --project tools/Brand -- <output folder>
-// The mark is the O-CoreOp logo redrawn as geometry, so it can be made in any colour at any size: a half ring open to the right, a smaller
-// half ring below, and a ring at the centre, white on a plate in the app's colour.
+// The mark is the same in every app, redrawn as geometry so it can be made in any colour at any size: a half ring open to the right, a smaller
+// half ring below, and a ring at the centre, on a plate in the app's colour (docs/BRANDING.md in O-Studio). The AI agent has its own artwork:
+// the ring, lit, turning through all four colours.
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Drawing.Text;
 
 var output = args.Length > 0 ? args[0] : Path.Combine(AppContext.BaseDirectory, "brand");
-var apps = new (string Folder, string Name, Color Plate)[]
-{
-    ("studio", "O-Studio", ColorTranslator.FromHtml("#FF6B00")),
-    ("coreop", "O-CoreOp", ColorTranslator.FromHtml("#1F5FD1")),
-    ("draft", "O-Draft", ColorTranslator.FromHtml("#17181B")),
-    ("osas", "OSAS", ColorTranslator.FromHtml("#17181B")),
-};
-var ink = ColorTranslator.FromHtml("#17181B");
-var inkSoft = ColorTranslator.FromHtml("#45484D");
+// The suite palette. The glow tones are the four colours as they read on a Mirage disc, for the AI orb.
+var mirage = ColorTranslator.FromHtml("#16232B"); // Dark Slate Blue
+var flame = ColorTranslator.FromHtml("#FF5B04");  // Flame Orange
+var sea = ColorTranslator.FromHtml("#075056");    // Deep Sea Green
+var sand = ColorTranslator.FromHtml("#E4EEF0");   // Wild Sand
+var white = Color.White;
+var ink = mirage;
+var inkSoft = ColorTranslator.FromHtml("#4A5A63");
+var glow = new[] { "#FF5B04", "#E4EEF0", "#1496A0", "#4F7C93" }.Select(ColorTranslator.FromHtml).ToArray();
 
-foreach (var (folder, name, plate) in apps)
+var apps = new (string Folder, string Name, Color Plate, Color Glyph)[]
+{
+    ("studio", "O-Studio", flame, white),
+    ("draft", "O-Draft", mirage, white),
+    ("form", "O-Form", sea, white),
+    ("coreop", "O-CoreOp", sand, mirage),
+};
+
+foreach (var (folder, name, plate, glyph) in apps)
 {
     var dir = Path.Combine(output, folder);
     Directory.CreateDirectory(dir);
-    var suite = folder == "osas"; // the suite's own mark has the three accents as a strip along the bottom
-    Mark(1024, plate, suite: suite).Save(Path.Combine(dir, "mark.png"), ImageFormat.Png);
-    Mark(256, plate, suite: suite).Save(Path.Combine(dir, "mark-256.png"), ImageFormat.Png);
-    Ico(Path.Combine(dir, "app.ico"), plate, suite);
-    Lockup(name, plate, suite).Save(Path.Combine(dir, "lockup.png"), ImageFormat.Png);
-    File.WriteAllText(Path.Combine(dir, "mark.svg"), Svg(name, plate, suite));
-    if (suite)
-        continue;
+    Mark(1024, plate, glyph).Save(Path.Combine(dir, "mark.png"), ImageFormat.Png);
+    Mark(256, plate, glyph).Save(Path.Combine(dir, "mark-256.png"), ImageFormat.Png);
+    Ico(Path.Combine(dir, "app.ico"), plate, glyph);
+    Lockup(name, plate, glyph).Save(Path.Combine(dir, "lockup.png"), ImageFormat.Png);
+    File.WriteAllText(Path.Combine(dir, "mark.svg"), Svg(name, plate, glyph));
 
     var tiles = Path.Combine(dir, "tiles");
     Directory.CreateDirectory(tiles);
     foreach (var (file, size) in new[] { ("Square44x44Logo.png", 44), ("Square71x71Logo.png", 71), ("Square150x150Logo.png", 150), ("Square310x310Logo.png", 310), ("StoreLogo.png", 50), ("logo.png", 150), ("logo_plate.png", 256) })
-        Mark(size, plate, full: file != "logo_plate.png").Save(Path.Combine(tiles, file), ImageFormat.Png);
-    Wide(310, 150, plate).Save(Path.Combine(tiles, "Wide310x150Logo.png"), ImageFormat.Png);
-    Wide(620, 300, plate).Save(Path.Combine(tiles, "SplashScreen.png"), ImageFormat.Png);
+        Mark(size, plate, glyph, full: file != "logo_plate.png").Save(Path.Combine(tiles, file), ImageFormat.Png);
+    Wide(310, 150, plate, glyph).Save(Path.Combine(tiles, "Wide310x150Logo.png"), ImageFormat.Png);
+    Wide(620, 300, plate, glyph).Save(Path.Combine(tiles, "SplashScreen.png"), ImageFormat.Png);
 }
+
+var orbDir = Path.Combine(output, "ai");
+Directory.CreateDirectory(orbDir);
+foreach (var size in new[] { 1024, 256, 64 })
+    Orb(size, mirage, glow).Save(Path.Combine(orbDir, $"ai-orb-{size}.png"), ImageFormat.Png);
+File.WriteAllText(Path.Combine(orbDir, "ai-orb.svg"), OrbSvg(mirage, glow));
+Sheet(apps, mirage, flame, sea, sand, glow).Save(Path.Combine(output, "brand-sheet.png"), ImageFormat.Png);
 Console.WriteLine("Written to " + output);
 
 // The same mark as geometry in a 194 by 194 box: a half ring open to the right (radius 69, stroke 18), a smaller half ring below
 // the centre (radius 50, stroke 12), and a ring at the centre (radius 18.5, stroke 5), all white, centred at (107, 96).
-static string Svg(string name, Color plate, bool suite)
+static string Hex(Color c) => $"#{c.R:X2}{c.G:X2}{c.B:X2}";
+
+static string Svg(string name, Color plate, Color glyph)
 {
-    var fill = $"#{plate.R:X2}{plate.G:X2}{plate.B:X2}";
-    var strip = suite
-        ? "  <rect x=\"0\" y=\"177\" width=\"64.7\" height=\"17\" fill=\"#FF6B00\"/>\n  <rect x=\"64.7\" y=\"177\" width=\"64.7\" height=\"17\" fill=\"#1F5FD1\"/>\n  <rect x=\"129.3\" y=\"177\" width=\"64.7\" height=\"17\" fill=\"#C9C6BC\"/>\n"
-        : "";
+    var fill = Hex(plate);
     return $"""
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 194 194" width="194" height="194">
   <title>{name}</title>
-  <rect width="194" height="194" fill="{fill}"/>
-{strip}  <g fill="none" stroke="#fff">
+  <rect width="194" height="194" rx="42" fill="{fill}"/>
+  <g fill="none" stroke="{Hex(glyph)}">
     <path d="M107 27A69 69 0 0 0 107 165" stroke-width="18"/>
     <path d="M57 96A50 50 0 0 0 157 96" stroke-width="12"/>
     <circle cx="107" cy="96" r="18.5" stroke-width="5"/>
@@ -74,7 +86,7 @@ static Graphics Canvas(Bitmap bitmap)
 }
 
 // The glyph is drawn in the coordinates of the original 256 pixel plate (plate 31..224); the transform fits the plate to the target square.
-static void DrawMark(Graphics g, float x, float y, float size, Color plate, bool full, bool suite = false)
+static void DrawMark(Graphics g, float x, float y, float size, Color plate, Color glyph, bool full)
 {
     var state = g.Save();
     var s = size / 194f;
@@ -91,26 +103,13 @@ static void DrawMark(Graphics g, float x, float y, float size, Color plate, bool
         else
             g.FillRectangle(brush, 31, 31, 194, 194);
     }
-    if (suite)
-    {
-        using var clip = Rounded(31, 31, 194, 194, 34);
-        var saved = g.Save();
-        g.SetClip(clip);
-        var colours = new[] { ColorTranslator.FromHtml("#FF6B00"), ColorTranslator.FromHtml("#1F5FD1"), ColorTranslator.FromHtml("#C9C6BC") };
-        for (var i = 0; i < 3; i++)
-        {
-            using var stripe = new SolidBrush(colours[i]);
-            g.FillRectangle(stripe, 31 + i * 194f / 3f, 208, 194f / 3f + 1, 17);
-        }
-        g.Restore(saved);
-    }
-    using var white = new Pen(Color.White) { StartCap = LineCap.Flat, EndCap = LineCap.Flat };
-    white.Width = 18;
-    g.DrawArc(white, 138 - 69, 127 - 69, 138, 138, 90, 180); // the C: a half ring open to the right
-    white.Width = 12;
-    g.DrawArc(white, 138 - 50, 127 - 50, 100, 100, 0, 180); // the smaller half ring below the centre
-    white.Width = 5;
-    g.DrawEllipse(white, 138 - 18.5f, 127 - 18.5f, 37, 37); // the ring at the centre
+    using var pen = new Pen(glyph) { StartCap = LineCap.Flat, EndCap = LineCap.Flat };
+    pen.Width = 18;
+    g.DrawArc(pen, 138 - 69, 127 - 69, 138, 138, 90, 180); // the C: a half ring open to the right
+    pen.Width = 12;
+    g.DrawArc(pen, 138 - 50, 127 - 50, 100, 100, 0, 180); // the smaller half ring below the centre
+    pen.Width = 5;
+    g.DrawEllipse(pen, 138 - 18.5f, 127 - 18.5f, 37, 37); // the ring at the centre
     g.Restore(state);
 }
 
@@ -125,56 +124,49 @@ static GraphicsPath Rounded(float x, float y, float w, float h, float r)
     return path;
 }
 
-static Bitmap Mark(int size, Color plate, bool full = true, bool suite = false)
+static Bitmap Mark(int size, Color plate, Color glyph, bool full = true)
 {
     var bitmap = NewBitmap(size, size);
     using var g = Canvas(bitmap);
-    DrawMark(g, 0, 0, size, plate, full, suite);
+    DrawMark(g, 0, 0, size, plate, glyph, full);
     return bitmap;
 }
 
-static Bitmap Wide(int w, int h, Color plate)
+static Bitmap Wide(int w, int h, Color plate, Color glyph)
 {
     var bitmap = NewBitmap(w, h);
     using var g = Canvas(bitmap);
     using (var brush = new SolidBrush(plate))
         g.FillRectangle(brush, 0, 0, w, h);
     var size = h * 0.62f;
-    // the plate is the same colour as the background, so only the white glyph shows
-    DrawMark(g, (w - size) / 2, (h - size) / 2, size, plate, full: false);
+    // the plate is the same colour as the background, so only the glyph shows
+    DrawMark(g, (w - size) / 2, (h - size) / 2, size, plate, glyph, full: false);
     return bitmap;
 }
 
-static Bitmap Lockup(string name, Color plate, bool suite = false)
+static Bitmap Lockup(string name, Color plate, Color glyph)
 {
     var bitmap = NewBitmap(1600, 640);
     using var g = Canvas(bitmap);
-    DrawMark(g, 40, 40, 560, plate, full: true, suite: suite);
+    DrawMark(g, 40, 40, 560, plate, glyph, full: true);
     using var title = new Font("Segoe UI Semibold", 150, FontStyle.Regular, GraphicsUnit.Pixel);
     using var line = new Font("Segoe UI", 52, FontStyle.Regular, GraphicsUnit.Pixel);
     using var small = new Font("Segoe UI Semibold", 44, FontStyle.Regular, GraphicsUnit.Pixel);
-    using var inkBrush = new SolidBrush(ColorTranslator.FromHtml("#17181B"));
-    using var softBrush = new SolidBrush(ColorTranslator.FromHtml("#45484D"));
-    using var accentBrush = new SolidBrush(plate);
+    using var inkBrush = new SolidBrush(ColorTranslator.FromHtml("#16232B"));
+    using var softBrush = new SolidBrush(ColorTranslator.FromHtml("#4A5A63"));
     g.DrawString(name, title, inkBrush, 650, 150);
-    if (suite)
-    {
-        g.DrawString("Open Source Architecture Suit", line, softBrush, 660, 360);
-        g.DrawString("O-Studio · O-CoreOp · O-Draft", small, softBrush, 660, 440);
-        return bitmap;
-    }
     g.DrawString("Open Source Architecture Suit", line, softBrush, 660, 360);
-    g.DrawString("OSAS", small, accentBrush, 660, 440);
+    g.DrawString("An app of the O-Studio suite", small, softBrush, 660, 440);
     return bitmap;
 }
 
 // An ICO file whose images are PNGs, which Windows has read since Vista.
-static void Ico(string path, Color plate, bool suite = false)
+static void Ico(string path, Color plate, Color glyph)
 {
     var sizes = new[] { 16, 24, 32, 48, 64, 128, 256 };
     var images = sizes.Select(s =>
     {
-        using var bitmap = Mark(s, plate, suite: suite);
+        using var bitmap = Mark(s, plate, glyph);
         using var stream = new MemoryStream();
         bitmap.Save(stream, ImageFormat.Png);
         return stream.ToArray();
@@ -199,4 +191,113 @@ static void Ico(string path, Color plate, bool suite = false)
     }
     foreach (var image in images)
         w.Write(image);
+}
+
+// The AI agent: the ring of the mark, lit, turning through the four colours (as glow tones) on a Mirage disc. Still, the orb is four 90 degree arcs
+// with a wider, fainter pass behind them for the glow; ai-orb.svg is the animated master (the arcs turn once every eight seconds).
+static Bitmap Orb(int size, Color disc, Color[] glow)
+{
+    var bitmap = NewBitmap(size, size);
+    using var g = Canvas(bitmap);
+    var k = size / 194f;
+    using (var brush = new SolidBrush(disc))
+        g.FillEllipse(brush, 0, 0, size, size);
+    for (var pass = 0; pass < 2; pass++)
+    {
+        for (var i = 0; i < 4; i++)
+        {
+            var colour = pass == 0 ? Color.FromArgb(70, glow[i]) : glow[i];
+            using var pen = new Pen(colour, (pass == 0 ? 26 : 13) * k) { StartCap = LineCap.Flat, EndCap = LineCap.Flat };
+            var r = 46 * k;
+            g.DrawArc(pen, 97 * k - r, 97 * k - r, 2 * r, 2 * r, -90 + 90 * i, 90);
+        }
+    }
+
+    return bitmap;
+}
+
+static string OrbSvg(Color disc, Color[] glow)
+{
+    var arcs = new System.Text.StringBuilder();
+    for (var i = 0; i < 4; i++)
+    {
+        double a = (-90 + 90 * i) * Math.PI / 180, b = (-90 + 90 * (i + 1)) * Math.PI / 180;
+        arcs.Append(System.Globalization.CultureInfo.InvariantCulture, $"      <path d=\"M{97 + 46 * Math.Cos(a):0.##} {97 + 46 * Math.Sin(a):0.##}A46 46 0 0 1 {97 + 46 * Math.Cos(b):0.##} {97 + 46 * Math.Sin(b):0.##}\" stroke=\"{Hex(glow[i])}\"/>\n");
+    }
+
+    return $"""
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 194 194" width="194" height="194" role="img" aria-label="AI agent">
+  <title>AI agent</title>
+  <defs><filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="7"/></filter></defs>
+  <circle cx="97" cy="97" r="97" fill="{Hex(disc)}"/>
+  <g fill="none" stroke-width="13" stroke-linecap="butt">
+    <g filter="url(#glow)" opacity="0.85">
+      <animateTransform attributeName="transform" type="rotate" from="0 97 97" to="360 97 97" dur="8s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.55;0.95;0.55" dur="4s" repeatCount="indefinite"/>
+{arcs}    </g>
+    <g>
+      <animateTransform attributeName="transform" type="rotate" from="0 97 97" to="360 97 97" dur="8s" repeatCount="indefinite"/>
+{arcs}    </g>
+  </g>
+</svg>
+""";
+}
+
+// The brand sheet: the palette, the mark in each app, the AI agent.
+static Bitmap Sheet((string Folder, string Name, Color Plate, Color Glyph)[] apps, Color mirage, Color flame, Color sea, Color sand, Color[] glow)
+{
+    var bitmap = NewBitmap(1600, 1060);
+    using var g = Canvas(bitmap);
+    g.Clear(Color.White);
+    using var title = new Font("Segoe UI Semibold", 40, FontStyle.Regular, GraphicsUnit.Pixel);
+    using var head = new Font("Segoe UI Semibold", 22, FontStyle.Regular, GraphicsUnit.Pixel);
+    using var text = new Font("Segoe UI", 15, FontStyle.Regular, GraphicsUnit.Pixel);
+    using var mono = new Font("Consolas", 13, FontStyle.Regular, GraphicsUnit.Pixel);
+    using var inkBrush = new SolidBrush(mirage);
+    using var dimBrush = new SolidBrush(ColorTranslator.FromHtml("#5C6B73"));
+    g.DrawString("O-Studio suite brand", title, inkBrush, 60, 36);
+    g.DrawString("One mark. Four colours. Each app wears one; the AI agent wears all four.", text, dimBrush, 64, 112);
+    var swatches = new (string Name, string App, Color Colour, Color On)[]
+    {
+        ("Dark Slate Blue (Mirage)", "O-Draft", mirage, Color.White),
+        ("Flame Orange", "O-Studio", flame, Color.White),
+        ("Deep Sea Green", "O-Form", sea, Color.White),
+        ("Wild Sand", "O-CoreOp", sand, mirage),
+    };
+    for (var i = 0; i < swatches.Length; i++)
+    {
+        var (name, app, colour, on) = swatches[i];
+        float x = 60 + i * 380, y = 160;
+        using (var path = Rounded(x, y, 350, 230, 18))
+        using (var fill = new SolidBrush(colour))
+        {
+            g.FillPath(fill, path);
+            if (colour == sand)
+            {
+                using var edge = new Pen(ColorTranslator.FromHtml("#C9D8DC"));
+                g.DrawPath(edge, path);
+            }
+        }
+
+        using var onBrush = new SolidBrush(on);
+        g.DrawString(app, head, onBrush, x + 22, y + 20);
+        g.DrawString(name, text, onBrush, x + 22, y + 150);
+        g.DrawString($"HEX {Hex(colour)}    RGB {colour.R}, {colour.G}, {colour.B}", mono, onBrush, x + 22, y + 184);
+    }
+
+    g.DrawString("The mark in each app", head, inkBrush, 60, 430);
+    for (var i = 0; i < apps.Length; i++)
+    {
+        var (_, name, plate, glyph) = apps[i];
+        using var mark = Mark(256, plate, glyph);
+        g.DrawImage(mark, 60 + i * 380, 485, 200, 200);
+        g.DrawString(name, head, inkBrush, 60 + i * 380, 700);
+    }
+
+    g.DrawString("The AI agent", head, inkBrush, 60, 780);
+    using (var orb = Orb(256, mirage, glow))
+        g.DrawImage(orb, 60, 830, 190, 190);
+    g.DrawString("The ring of the mark, lit. It turns through Flame Orange, Wild Sand, Deep Sea Green and Mirage\n(as glow tones on a Mirage disc) while the agent runs; grey and still when it does not.\nai/ai-orb.svg is the animated master.", text, dimBrush, 280, 860);
+    g.DrawString("Type: app names in Studio Grotesk, display in Mazius Display. This sheet uses Segoe UI until the fonts are installed.", mono, dimBrush, 60, 1030);
+    return bitmap;
 }

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Generated from templates/SuiteDark.template.xaml by tools/make-variants.mjs. The dark theme for O-CoreOp: app brushes plus system-control overrides. Merge into the app's Default/Dark theme dictionaries in App.xaml (see README). -->
+<!-- Generated from templates/SuiteDark.template.xaml by tools/make-variants.mjs. The dark theme for O-Draft: app brushes plus system-control overrides. Merge into the app's Default/Dark theme dictionaries in App.xaml (see README). -->
 <ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
         <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="ms-appx:///O.Ui/Themes/SuiteAccent.Blue.xaml"/>
+        <ResourceDictionary Source="ms-appx:///O.Ui/Themes/SuiteAccent.Mirage.xaml"/>
         <ResourceDictionary Source="ms-appx:///O.Ui/Themes/SuiteColors.Dark.xaml"/>
     </ResourceDictionary.MergedDictionaries>
     <StaticResource x:Key="AppBackgroundColor" ResourceKey="SuiteBackground"/>

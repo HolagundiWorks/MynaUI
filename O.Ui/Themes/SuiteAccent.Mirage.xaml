@@ -3,10 +3,10 @@
 <ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <Color x:Key="SuiteAccent">#1A2332</Color>
-    <Color x:Key="SuiteAccentHover">#2A3548</Color>
-    <Color x:Key="SuiteAccentPressed">#3A465C</Color>
-    <Color x:Key="SuiteAccentText">#1A2332</Color>
-    <Color x:Key="SuiteAccentWash">#D8DEE8</Color>
+    <Color x:Key="SuiteAccent">#16232B</Color>
+    <Color x:Key="SuiteAccentHover">#22343F</Color>
+    <Color x:Key="SuiteAccentPressed">#2E4452</Color>
+    <Color x:Key="SuiteAccentText">#16232B</Color>
+    <Color x:Key="SuiteAccentWash">#D5DEE2</Color>
     <Color x:Key="SuiteOnAccent">#FFFFFF</Color>
 </ResourceDictionary>
