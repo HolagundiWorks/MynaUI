@@ -19,4 +19,8 @@
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.1742" />
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.6.250108002" />
   </ItemGroup>
+  <ItemGroup>
+    <!-- Mazius Display (SIL OFL 1.1, Collletttivo): flows to every app that references O.Ui, as Assets\Fonts\ beside its exe. -->
+    <Content Include="Assets\Fonts\MaziusDisplay-*.otf;Assets\Fonts\MaziusDisplay-LICENSE.txt" Link="Assets\Fonts\%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
 </Project>
