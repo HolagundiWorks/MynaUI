@@ -303,6 +303,6 @@ static Bitmap Sheet((string Folder, string Name, Color Plate, Color Glyph)[] app
     using (var orb = Orb(256, mirage, glow))
         g.DrawImage(orb, 60, 830, 190, 190);
     g.DrawString("The ring of the mark, lit. It turns through Flame Orange, Wild Sand, Deep Sea Green and Mirage\n(as glow tones on a Mirage disc) while the agent runs; grey and still when it does not.\nai/ai-orb.svg is the animated master.", text, dimBrush, 280, 860);
-    g.DrawString("Type: app names in Studio Grotesk, display in Mazius Display. This sheet uses Segoe UI until the fonts are installed.", mono, dimBrush, 60, 1030);
+    g.DrawString("Type: app names in Apfel Grotezk, display in Mazius Display (both SIL OFL, bundled in O.Ui). This sheet is drawn in Segoe UI.", mono, dimBrush, 60, 1030);
     return bitmap;
 }

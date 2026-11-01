@@ -20,7 +20,7 @@ The palette, the mark, the AI agent's orb and the type are described in `docs/BR
 | `Themes/SuiteStyles.xaml` | Text styles, control defaults, `SuiteCardGap`, `SuiteRailButtonStyle`, card and chip |
 | `Themes/SuiteNavigation.<Accent>.xaml`, `SuiteNavigation.cs` | The look of the left navigation pane |
 | `SuiteBrand.cs` | Suite and app names (`SuiteApp.Studio`, `.Metra` = O-CoreOp assembly alias, `.Draft`, `.Form`) |
-| `SuiteFonts.cs` | The two typefaces: Studio Grotesk for names, Mazius Display for large text, with fallbacks |
+| `SuiteFonts.cs` | The two typefaces: Apfel Grotezk for names (free stand-in for Studio Grotesk), Mazius Display for large text, both bundled |
 | `SuiteLandmarks.cs` | Draft-parity landmark helpers (`Navigation` / `Main` / `status`) |
 | `SuiteShell.cs`, `SuiteActivityRail.cs`, `SuitePageHeader.cs`, `SuiteContentSheet.cs` | Launcher-style rail + stage chrome (landmarks built in) |
 | `SuiteIcon.cs`, `SuiteIcons.cs`, `SuiteScale.cs` | Shared glyphs and spacing |
