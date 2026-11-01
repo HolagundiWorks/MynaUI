@@ -1,0 +1,280 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>AI Orb</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* ---------------------------------------------------------------
+   OSAS AI Orb — single dark theme, intentional visual commitment
+   Layout: full-viewport centered scene, orb + aura + ring mark
+   Colors: Ember #B83E16 · Dusk #5630A0 · Midnight #102C80 · Grove #166040
+   --------------------------------------------------------------- */
+:root {
+  --ember:    #B83E16;
+  --dusk:     #5630A0;
+  --midnight: #102C80;
+  --grove:    #166040;
+  --bg:       #06060c;
+  --label:    #8892a4;
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding-block: max(24px, env(safe-area-inset-top,0px)) max(24px, env(safe-area-inset-bottom,0px));
+  padding-left:  max(16px, env(safe-area-inset-left,0px));
+  padding-right: max(16px, env(safe-area-inset-right,0px));
+  font-family: "Segoe UI Variable", "Segoe UI", system-ui, sans-serif;
+}
+
+/* ── Subtle star field ── */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image:
+    radial-gradient(1px 1px at 12% 18%, rgba(255,255,255,0.35) 0%, transparent 100%),
+    radial-gradient(1px 1px at 82% 9%,  rgba(255,255,255,0.25) 0%, transparent 100%),
+    radial-gradient(1px 1px at 54% 72%, rgba(255,255,255,0.3)  0%, transparent 100%),
+    radial-gradient(1px 1px at 28% 88%, rgba(255,255,255,0.2)  0%, transparent 100%),
+    radial-gradient(1px 1px at 91% 55%, rgba(255,255,255,0.3)  0%, transparent 100%),
+    radial-gradient(1px 1px at 6%  63%, rgba(255,255,255,0.2)  0%, transparent 100%),
+    radial-gradient(1px 1px at 67% 34%, rgba(255,255,255,0.25) 0%, transparent 100%),
+    radial-gradient(1px 1px at 44% 47%, rgba(255,255,255,0.15) 0%, transparent 100%),
+    radial-gradient(1px 1px at 75% 82%, rgba(255,255,255,0.25) 0%, transparent 100%),
+    radial-gradient(1px 1px at 38% 22%, rgba(255,255,255,0.2)  0%, transparent 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Scene container ── */
+.scene {
+  position: relative;
+  width: min(300px, 70vmin);
+  height: min(300px, 70vmin);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+/* ── Atmospheric halos (blurred colour lobes, screen blend) ── */
+.aura {
+  position: absolute;
+  width: 150%;
+  height: 150%;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  filter: blur(30px);
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+
+.aura-ember {
+  background: radial-gradient(ellipse 56% 54% at 38% 35%, rgba(184,62,22,0.80) 0%, transparent 64%);
+  animation: halo 5.2s ease-in-out infinite;
+}
+.aura-dusk {
+  background: radial-gradient(ellipse 52% 50% at 64% 33%, rgba(86,48,160,0.88) 0%, transparent 62%);
+  animation: halo 6.8s ease-in-out infinite reverse;
+  animation-delay: -2.1s;
+}
+.aura-midnight {
+  background: radial-gradient(ellipse 50% 52% at 62% 65%, rgba(16,44,128,0.92) 0%, transparent 64%);
+  animation: halo 7.4s ease-in-out infinite;
+  animation-delay: -4.0s;
+}
+.aura-grove {
+  background: radial-gradient(ellipse 54% 52% at 36% 66%, rgba(22,96,64,0.82) 0%, transparent 63%);
+  animation: halo 5.9s ease-in-out infinite reverse;
+  animation-delay: -1.2s;
+}
+
+@keyframes halo {
+  0%, 100% { opacity: 0.55; transform: translate(-50%,-50%) scale(1); }
+  50%       { opacity: 1;    transform: translate(-50%,-50%) scale(1.22); }
+}
+
+/* ── Orb: breathing outer wrapper ── */
+.orb-wrap {
+  position: relative;
+  width: 70%;
+  height: 70%;
+  animation: breathe 7.5s ease-in-out infinite;
+  z-index: 2;
+}
+
+@keyframes breathe {
+  0%, 100% { transform: scale(1); }
+  50%       { transform: scale(1.05); }
+}
+
+/* ── Orb: the sphere ── */
+.orb {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background:
+    radial-gradient(ellipse 72% 70% at 34% 30%, rgba(210,76,26,0.92) 0%, transparent 52%),
+    radial-gradient(ellipse 68% 66% at 68% 31%, rgba(90,52,168,0.88) 0%, transparent 54%),
+    radial-gradient(ellipse 66% 68% at 65% 70%, rgba(18,46,132,0.92) 0%, transparent 52%),
+    radial-gradient(ellipse 70% 68% at 32% 70%, rgba(24,100,68,0.88) 0%, transparent 54%),
+    radial-gradient(circle at 50% 50%, #130f28, #060610);
+  animation: orb-shift 12s ease-in-out infinite;
+}
+
+@keyframes orb-shift {
+  0%   { box-shadow: 0 0 0 1.5px rgba(255,255,255,0.07) inset, 0 0 55px 14px rgba(86,48,160,0.32),  0 0 110px 28px rgba(16,44,128,0.18),  0 0 170px 42px rgba(184,62,22,0.10); }
+  25%  { box-shadow: 0 0 0 1.5px rgba(255,255,255,0.08) inset, 0 0 60px 16px rgba(184,62,22,0.38), 0 0 120px 30px rgba(86,48,160,0.16),  0 0 180px 44px rgba(22,96,64,0.08); }
+  50%  { box-shadow: 0 0 0 1.5px rgba(255,255,255,0.09) inset, 0 0 57px 15px rgba(22,96,64,0.32),  0 0 115px 29px rgba(184,62,22,0.18), 0 0 175px 43px rgba(16,44,128,0.10); }
+  75%  { box-shadow: 0 0 0 1.5px rgba(255,255,255,0.07) inset, 0 0 52px 13px rgba(16,44,128,0.36), 0 0 108px 26px rgba(22,96,64,0.16),  0 0 165px 40px rgba(86,48,160,0.10); }
+  100% { box-shadow: 0 0 0 1.5px rgba(255,255,255,0.07) inset, 0 0 55px 14px rgba(86,48,160,0.32),  0 0 110px 28px rgba(16,44,128,0.18),  0 0 170px 42px rgba(184,62,22,0.10); }
+}
+
+/* Specular highlight */
+.orb::before {
+  content: "";
+  position: absolute;
+  top: 9%; left: 13%; right: 16%; bottom: 52%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at 38% 38%, rgba(255,255,255,0.19) 0%, transparent 68%);
+  animation: spec 7.5s ease-in-out infinite;
+}
+@keyframes spec {
+  0%, 100% { opacity: 0.65; }
+  50%       { opacity: 1; }
+}
+
+/* ── Ring mark ── */
+.ring-mark {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  animation: ring-glow 4.8s ease-in-out infinite;
+  animation-delay: -1.4s;
+}
+
+@keyframes ring-glow {
+  0%, 100% {
+    opacity: 0.82;
+    filter: drop-shadow(0 0 3px rgba(255,255,255,0.50))
+            drop-shadow(0 0 8px rgba(255,255,255,0.20));
+  }
+  50% {
+    opacity: 1;
+    filter: drop-shadow(0 0 7px rgba(255,255,255,0.80))
+            drop-shadow(0 0 16px rgba(255,255,255,0.38));
+  }
+}
+
+/* ── Orbiting particles ── */
+/* Centered-origin trick: position: abs at 50%/50% with w:0 h:0; child offsets are from scene center */
+.p-orbit {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 0; height: 0;
+  animation: orbit-cw linear infinite;
+  z-index: 3;
+}
+.p-orbit.ccw { animation-name: orbit-ccw; }
+.p-orbit.t11 { animation-duration: 11s; }
+.p-orbit.t16 { animation-duration: 16s; }
+.p-orbit.t20 { animation-duration: 20s; }
+.p-orbit.t26 { animation-duration: 26s; }
+
+@keyframes orbit-cw  { from { transform: rotate(0deg); }   to { transform: rotate(360deg); } }
+@keyframes orbit-ccw { from { transform: rotate(0deg); }   to { transform: rotate(-360deg); } }
+
+.p-dot {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  left: -2.5px;
+}
+/* Orbit radii chosen so particles sit just outside the orb-wrap (70% of scene = 105px at 300px scene).
+   Orb radius = 52.5px. Particles at 68–80px from center = 15–28px outside orb edge. */
+.p-dot.ember    { top: -76px;  background: #e05a28; box-shadow: 0 0 6px 2px rgba(184,62,22,0.75); }
+.p-dot.dusk     { top: -68px;  background: #7858d0; box-shadow: 0 0 6px 2px rgba(86,48,160,0.75); }
+.p-dot.midnight { top: -80px;  background: #2858b8; box-shadow: 0 0 6px 2px rgba(16,44,128,0.75); }
+.p-dot.grove    { top: -72px;  background: #22a870; box-shadow: 0 0 6px 2px rgba(22,96,64,0.75); }
+
+/* ── Label ── */
+.label {
+  margin-top: 30px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--label);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  animation: label-breathe 8s ease-in-out infinite;
+  animation-delay: -3s;
+  z-index: 1;
+  user-select: none;
+}
+
+.pip {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.pip-l { background: var(--ember);    box-shadow: 0 0 4px 1px rgba(184,62,22,0.6); }
+.pip-r { background: var(--midnight); box-shadow: 0 0 4px 1px rgba(16,44,128,0.6); }
+
+@keyframes label-breathe {
+  0%, 100% { opacity: 0.5; }
+  50%       { opacity: 0.95; }
+}
+
+/* ── Accessibility: reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; }
+}
+</style>
+
+<div class="scene">
+  <!-- Atmospheric halos -->
+  <div class="aura aura-ember"></div>
+  <div class="aura aura-dusk"></div>
+  <div class="aura aura-midnight"></div>
+  <div class="aura aura-grove"></div>
+
+  <!-- Orb sphere + ring mark -->
+  <div class="orb-wrap">
+    <div class="orb">
+      <svg class="ring-mark" viewBox="0 0 192 192" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <!-- Outer arc: left C-shape, CCW from top to bottom, r=60 -->
+        <path d="M96 36 A60 60 0 0 0 96 156" fill="none" stroke="#FFFFFF" stroke-width="16" stroke-linecap="round"/>
+        <!-- Inner arch: bottom half, CCW left to right, r=44 -->
+        <path d="M52 96 A44 44 0 0 0 140 96" fill="none" stroke="#FFFFFF" stroke-width="10" stroke-linecap="round"/>
+        <!-- Centre ring -->
+        <circle cx="96" cy="96" r="16" fill="none" stroke="#FFFFFF" stroke-width="4"/>
+      </svg>
+    </div>
+  </div>
+
+  <!-- Orbiting particles (positioned relative to scene center) -->
+  <div class="p-orbit t11">     <div class="p-dot ember"></div></div>
+  <div class="p-orbit ccw t16"> <div class="p-dot dusk"></div></div>
+  <div class="p-orbit t20">     <div class="p-dot midnight"></div></div>
+  <div class="p-orbit ccw t26"> <div class="p-dot grove"></div></div>
+</div>
+
+<div class="label" role="img" aria-label="OSAS AI">
+  <span class="pip pip-l"></span>
+  <span>OSAS — AI</span>
+  <span class="pip pip-r"></span>
+</div>
+
+</body></html>

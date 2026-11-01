@@ -16,7 +16,6 @@ var sand = ColorTranslator.FromHtml("#5630A0");   // Dusk (O-CoreOp)
 var white = Color.White;
 var ink = mirage;
 var inkSoft = ColorTranslator.FromHtml("#3E56A0");
-// The AI agent is gold: a radial gradient disc (upper-left highlight) with the mark in white.
 var glow = new[] { "#F0C840", "#D4980E", "#9B6000", "#6B4000" }.Select(ColorTranslator.FromHtml).ToArray();
 
 var apps = new (string Folder, string Name, Color Plate, Color Glyph)[]
@@ -194,80 +193,92 @@ static void Ico(string path, Color plate, Color glyph)
         w.Write(image);
 }
 
-// The AI agent: the suite mark in white on a molten-gold disc (radial gradient, highlight upper left). In the app the disc and halo breathe and gold
-// particles orbit; ai-orb.svg is the animated master.
+// The AI agent (design file AI Orb.html, kept as ai/ai-orb.html, is the animated master): a dark sphere lit by four soft lobes, one in each app colour
+// (Ember upper left, Dusk upper right, Midnight lower right, Grove lower left), the suite mark in white with round ends, and four small coloured
+// particles orbiting it. The still image is the first frame.
+static void Lobe(Graphics g, float cx, float cy, float rx, float ry, Color c, int alpha)
+{
+    using var path = new GraphicsPath();
+    path.AddEllipse(cx - rx, cy - ry, rx * 2, ry * 2);
+    using var brush = new PathGradientBrush(path)
+    {
+        CenterColor = Color.FromArgb(alpha, c),
+        SurroundColors = new[] { Color.FromArgb(0, c) },
+    };
+    g.FillPath(brush, path);
+}
+
+static Bitmap Orb(int size, Color unused, Color[] c)
+{
+    var bitmap = NewBitmap(size, size);
+    using var g = Canvas(bitmap);
+    var k = size / 194f;
+    using var disc = new GraphicsPath();
+    disc.AddEllipse(0, 0, size, size);
+    using (var baseBrush = new PathGradientBrush(disc) { CenterColor = ColorTranslator.FromHtml("#130F28"), SurroundColors = new[] { ColorTranslator.FromHtml("#060610") } })
+        g.FillPath(baseBrush, disc);
+    g.SetClip(disc);
+    float r = size * 0.5f;
+    Lobe(g, size * 0.34f, size * 0.30f, r * 1.05f, r * 1.0f, ColorTranslator.FromHtml("#D24C1A"), 235);
+    Lobe(g, size * 0.68f, size * 0.31f, r * 1.0f, r * 0.95f, ColorTranslator.FromHtml("#5A34A8"), 225);
+    Lobe(g, size * 0.65f, size * 0.70f, r * 0.95f, r * 1.0f, ColorTranslator.FromHtml("#122E84"), 235);
+    Lobe(g, size * 0.32f, size * 0.70f, r * 1.0f, r * 0.98f, ColorTranslator.FromHtml("#186444"), 225);
+    g.ResetClip();
+    // a soft glow behind the mark, then the mark; the mark is 74 % of the disc about its centre
+    g.TranslateTransform(97 * k, 97 * k);
+    g.ScaleTransform(0.74f, 0.74f);
+    g.TranslateTransform(-96 * k, -96 * k);
+    StrokeMark(g, k, Color.FromArgb(55, Color.White), 12);
+    StrokeMark(g, k, Color.White, 0);
+    g.ResetTransform();
+    // the four particles at their start angles, just inside the rim
+    var dots = new[] { ("#E05A28", 0.78f, 0f), ("#7858D0", 0.70f, 90f), ("#2858B8", 0.82f, 180f), ("#22A870", 0.74f, 270f) };
+    foreach (var (hex, rad, deg) in dots)
+    {
+        var a = (deg - 90) * MathF.PI / 180;
+        float x = size / 2 + MathF.Cos(a) * rad * size / 2, y = size / 2 + MathF.Sin(a) * rad * size / 2, d = size * 0.032f;
+        using var b = new SolidBrush(ColorTranslator.FromHtml(hex));
+        g.FillEllipse(b, x - d, y - d, d * 2, d * 2);
+    }
+
+    return bitmap;
+}
+
 static void StrokeMark(Graphics g, float k, Color c, float extra)
 {
     float cx = 107 * k, cy = 96 * k;
-    using var p1 = new Pen(c, (18 + extra) * k) { StartCap = LineCap.Flat, EndCap = LineCap.Flat };
-    using var p2 = new Pen(c, (12 + extra) * k) { StartCap = LineCap.Flat, EndCap = LineCap.Flat };
+    using var p1 = new Pen(c, (18 + extra) * k) { StartCap = LineCap.Round, EndCap = LineCap.Round };
+    using var p2 = new Pen(c, (12 + extra) * k) { StartCap = LineCap.Round, EndCap = LineCap.Round };
     using var p3 = new Pen(c, (5 + extra) * k);
     g.DrawArc(p1, cx - 69 * k, cy - 69 * k, 138 * k, 138 * k, 90, 180);
     g.DrawArc(p2, cx - 50 * k, cy - 50 * k, 100 * k, 100 * k, 0, 180);
     g.DrawEllipse(p3, cx - 18.5f * k, cy - 18.5f * k, 37 * k, 37 * k);
 }
 
-// gold[0..3] are the gradient stops: highlight, mid gold, deep gold, dark amber (0 %, 35 %, 65 %, 100 % from the upper-left highlight).
-static Bitmap Orb(int size, Color unused, Color[] gold)
+static string OrbSvg(Color unused, Color[] c)
 {
-    var bitmap = NewBitmap(size, size);
-    using var g = Canvas(bitmap);
-    var k = size / 194f;
-    using (var disc = new GraphicsPath())
-    {
-        disc.AddEllipse(0, 0, size, size);
-        using var brush = new PathGradientBrush(disc)
-        {
-            CenterPoint = new PointF(size * 0.35f, size * 0.30f),
-            InterpolationColors = new ColorBlend
-            {
-                Positions = new[] { 0f, 0.35f, 0.65f, 1f },
-                Colors = new[] { gold[3], gold[2], gold[1], gold[0] },
-            },
-        };
-        g.FillPath(brush, disc);
-    }
-    // the mark fills a little less than the disc: scaled to 74 % about its centre (96, 96)
-    g.TranslateTransform(97 * k, 97 * k);
-    g.ScaleTransform(0.74f, 0.74f);
-    g.TranslateTransform(-96 * k, -96 * k);
-    StrokeMark(g, k, Color.FromArgb(60, Color.White), 14);
-    StrokeMark(g, k, Color.White, 0);
-    return bitmap;
-}
-
-static string OrbSvg(Color unused, Color[] gold)
-{
-    string[] dots = { "#F0C840", "#D4980E", "#E8B030", "#C88010" };
-    var particles = string.Join("\n", dots.Select((c, i) =>
-        $"    <g><animateTransform attributeName=\"transform\" type=\"rotate\" from=\"{i * 90} 97 97\" to=\"{i * 90 + 360} 97 97\" dur=\"{10 + i * 2}s\" repeatCount=\"indefinite\"/><circle cx=\"97\" cy=\"{6 + i * 3}\" r=\"{3 - i * 0.4:0.0}\" fill=\"{c}\"/></g>"));
-    string Circles(double extra) => $"""
-      <path d="M107 27A69 69 0 0 0 107 165" stroke-width="{18 + extra}"/>
-      <path d="M57 96A50 50 0 0 0 157 96" stroke-width="{12 + extra}"/>
-      <circle cx="107" cy="96" r="18.5" stroke-width="{5 + extra}"/>
-""";
+    string Lobe(string id, string col, double cx, double cy) => $"""<radialGradient id="{id}" cx="{cx}" cy="{cy}" r="0.55"><stop offset="0" stop-color="{col}" stop-opacity="0.92"/><stop offset="1" stop-color="{col}" stop-opacity="0"/></radialGradient>""";
+    string Dot(string col, int r, int dur, bool ccw) => $"""<g><animateTransform attributeName="transform" type="rotate" from="0 97 97" to="{(ccw ? -360 : 360)} 97 97" dur="{dur}s" repeatCount="indefinite"/><circle cx="97" cy="{97 - r}" r="3.2" fill="{col}"/></g>""";
     return $"""
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 194 194" width="194" height="194" role="img" aria-label="AI agent">
   <title>AI agent</title>
   <defs>
-    <radialGradient id="gold" cx="35%" cy="30%" r="75%">
-      <stop offset="0" stop-color="{Hex(gold[0])}"/><stop offset="0.35" stop-color="{Hex(gold[1])}"/><stop offset="0.65" stop-color="{Hex(gold[2])}"/><stop offset="1" stop-color="{Hex(gold[3])}"/>
-    </radialGradient>
-    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="6"/></filter>
+    <radialGradient id="base" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#130F28"/><stop offset="1" stop-color="#060610"/></radialGradient>
+    {Lobe("ember", "#D24C1A", 0.34, 0.30)}
+    {Lobe("dusk", "#5A34A8", 0.68, 0.31)}
+    {Lobe("midnight", "#122E84", 0.65, 0.70)}
+    {Lobe("grove", "#186444", 0.32, 0.70)}
+    <clipPath id="disc"><circle cx="97" cy="97" r="97"/></clipPath>
   </defs>
-  <circle cx="97" cy="97" r="97" fill="url(#gold)">
-    <animate attributeName="opacity" values="0.92;1;0.92" dur="4s" repeatCount="indefinite"/>
-  </circle>
-  <g fill="none" stroke="#FFFFFF" stroke-linecap="butt" transform="translate(97 97) scale(0.74) translate(-96 -96)">
-    <g filter="url(#glow)" opacity="0.5">
-      <animate attributeName="opacity" values="0.25;0.7;0.25" dur="4s" repeatCount="indefinite"/>
-{Circles(16)}    </g>
-    <g>
-{Circles(0)}    </g>
+  <circle cx="97" cy="97" r="97" fill="url(#base)"/>
+  <g clip-path="url(#disc)">
+    <rect width="194" height="194" fill="url(#ember)"/><rect width="194" height="194" fill="url(#dusk)"/>
+    <rect width="194" height="194" fill="url(#midnight)"/><rect width="194" height="194" fill="url(#grove)"/>
   </g>
-  <g>
-{particles}
+  <g fill="none" stroke="#FFFFFF" stroke-linecap="round" transform="translate(97 97) scale(0.74) translate(-96 -96)">
+    <path d="M107 27A69 69 0 0 0 107 165" stroke-width="18"/><path d="M57 96A50 50 0 0 0 157 96" stroke-width="12"/><circle cx="107" cy="96" r="18.5" stroke-width="5"/>
   </g>
+  {Dot("#E05A28", 76, 11, false)}{Dot("#7858D0", 68, 16, true)}{Dot("#2858B8", 80, 20, false)}{Dot("#22A870", 72, 26, true)}
 </svg>
 """;
 }
@@ -285,7 +296,7 @@ static Bitmap Sheet((string Folder, string Name, Color Plate, Color Glyph)[] app
     using var inkBrush = new SolidBrush(mirage);
     using var dimBrush = new SolidBrush(ColorTranslator.FromHtml("#5C6B73"));
     g.DrawString("O-Studio suite brand", title, inkBrush, 60, 36);
-    g.DrawString("One mark. Four colours. Each app wears one; the AI agent wears gold.", text, dimBrush, 64, 112);
+    g.DrawString("One mark. Four colours. Each app wears one; the AI agent wears all four.", text, dimBrush, 64, 112);
     var swatches = new (string Name, string App, Color Colour, Color On)[]
     {
         ("Midnight", "O-Draft", mirage, Color.White),
@@ -321,7 +332,7 @@ static Bitmap Sheet((string Folder, string Name, Color Plate, Color Glyph)[] app
     g.DrawString("The AI agent", head, inkBrush, 60, 780);
     using (var orb = Orb(256, mirage, glow))
         g.DrawImage(orb, 60, 830, 190, 190);
-    g.DrawString("The suite mark in white on a molten-gold disc. While the agent runs the disc and halo breathe and\ngold particles orbit; waiting is half strength, off is nearly dark. ai/ai-orb.svg is the animated master.", text, dimBrush, 280, 860);
+    g.DrawString("A dark sphere lit by four lobes, one in each app colour, the suite mark in white, and four coloured\nparticles orbiting. ai/ai-orb.html is the animated master (design file); ai-orb.svg and the PNGs are its first frame.", text, dimBrush, 280, 860);
     g.DrawString("Type: app names in Apfel Grotezk, display in Mazius Display (both SIL OFL, bundled in O.Ui). This sheet is drawn in Segoe UI.", mono, dimBrush, 60, 1030);
     return bitmap;
 }
