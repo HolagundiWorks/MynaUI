@@ -12,6 +12,21 @@ public sealed class SuiteThemeSwitch : ToggleButton
 
     public SuiteThemeSwitch()
     {
+        // A checked ToggleButton takes the Windows accent colour (the user's, often cyan). The switch wears the app's accent instead.
+        Resources = (ResourceDictionary)Microsoft.UI.Xaml.Markup.XamlReader.Load(
+            """
+            <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                <SolidColorBrush x:Key="ToggleButtonBackgroundChecked" Color="{ThemeResource SuiteAccent}"/>
+                <SolidColorBrush x:Key="ToggleButtonBackgroundCheckedPointerOver" Color="{ThemeResource SuiteAccentHover}"/>
+                <SolidColorBrush x:Key="ToggleButtonBackgroundCheckedPressed" Color="{ThemeResource SuiteAccentPressed}"/>
+                <SolidColorBrush x:Key="ToggleButtonBorderBrushChecked" Color="{ThemeResource SuiteAccentPressed}"/>
+                <SolidColorBrush x:Key="ToggleButtonBorderBrushCheckedPointerOver" Color="{ThemeResource SuiteAccentPressed}"/>
+                <SolidColorBrush x:Key="ToggleButtonBorderBrushCheckedPressed" Color="{ThemeResource SuiteAccentPressed}"/>
+                <SolidColorBrush x:Key="ToggleButtonForegroundChecked" Color="{ThemeResource SuiteOnAccent}"/>
+                <SolidColorBrush x:Key="ToggleButtonForegroundCheckedPointerOver" Color="{ThemeResource SuiteOnAccent}"/>
+                <SolidColorBrush x:Key="ToggleButtonForegroundCheckedPressed" Color="{ThemeResource SuiteOnAccent}"/>
+            </ResourceDictionary>
+            """);
         Content = "Theme";
         MinWidth = 72;
         MinHeight = SuiteScale.ControlMinHeight;

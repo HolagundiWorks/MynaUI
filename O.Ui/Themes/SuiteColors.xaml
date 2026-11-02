@@ -3,8 +3,8 @@
   Suite neutrals — cool soft-UI glass aligned with O-Draft ColorTokens (AppBackground #E4EAF2).
   Each app adds its own accent (SuiteAccent.Orange, .Blue or .Black.xaml).
   Accent colours are for fills and marks; text in the accent colour uses SuiteAccentText.
-  Contrast on white: ink ~15.8, ink soft ~4.8 (AA ≥4.5:1 — WCAG 1.4.3).
-  ink soft on BG (#E4EAF2) 4.52:1 ✓ on Sidebar (#EEF2F8) 4.87:1 ✓.
+  Ink is Midnight #102C80 (brand guide, section 5): 12.4:1 on white, 10.2:1 on BG (#E4EAF2).
+  Ink soft is Midnight soft #3E56A0: 6.9:1 on white, 5.7:1 on BG, 6.1:1 on Sidebar (AA ≥4.5:1 — WCAG 1.4.3).
   EdgeStrong: 3.28:1 on BG ✓, 3.97:1 on Surface ✓ (WCAG 1.4.11 non-text ≥3:1).
 -->
 <ResourceDictionary
@@ -13,9 +13,9 @@
     <Color x:Key="SuiteBackground">#E4EAF2</Color>
     <Color x:Key="SuiteSidebar">#EEF2F8</Color>
     <Color x:Key="SuiteSurface">#FFFFFF</Color>
-    <Color x:Key="SuiteInk">#1A2332</Color>
-    <!-- Was #64748B (3.93:1 on BG — WCAG 1.4.3 fail). Darkened for ≥4.5:1 on all backgrounds. -->
-    <Color x:Key="SuiteInkSoft">#546B88</Color>
+    <Color x:Key="SuiteInk">#102C80</Color>
+    <!-- Was #64748B, then #546B88 (4.52:1 on BG, the edge of AA); Midnight soft is in the brand and has headroom. -->
+    <Color x:Key="SuiteInkSoft">#3E56A0</Color>
     <Color x:Key="SuiteEdge">#D8DEE8</Color>
     <!-- Was #94A3B8 (2.12:1 on BG — WCAG 1.4.11 fail). Darkened for ≥3:1 non-text contrast. -->
     <Color x:Key="SuiteEdgeStrong">#788090</Color>
