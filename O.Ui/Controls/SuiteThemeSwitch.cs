@@ -1,40 +1,33 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Automation;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
+using Microsoft.UI.Xaml.Media;
 
 namespace O.Ui.Controls;
 
-/// <summary>Compact light/dark toggle bound to <see cref="SuiteAppearance"/>.</summary>
-public sealed class SuiteThemeSwitch : ToggleButton
+/// <summary>
+/// The light/dark button of the bottom status row, bound to <see cref="SuiteAppearance"/>. It is the same icon button as
+/// O-Draft's (a drawn sun while light is on, a moon while dark is on), so every app's status row reads alike.
+/// </summary>
+public sealed class SuiteThemeSwitch : Button
 {
+    readonly SuiteDrawnIcon _icon = new();
     Window? _window;
 
     public SuiteThemeSwitch()
     {
-        // A checked ToggleButton takes the Windows accent colour (the user's, often cyan). The switch wears the app's accent instead.
-        Resources = (ResourceDictionary)Microsoft.UI.Xaml.Markup.XamlReader.Load(
-            """
-            <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-                <SolidColorBrush x:Key="ToggleButtonBackgroundChecked" Color="{ThemeResource SuiteAccent}"/>
-                <SolidColorBrush x:Key="ToggleButtonBackgroundCheckedPointerOver" Color="{ThemeResource SuiteAccentHover}"/>
-                <SolidColorBrush x:Key="ToggleButtonBackgroundCheckedPressed" Color="{ThemeResource SuiteAccentPressed}"/>
-                <SolidColorBrush x:Key="ToggleButtonBorderBrushChecked" Color="{ThemeResource SuiteAccentPressed}"/>
-                <SolidColorBrush x:Key="ToggleButtonBorderBrushCheckedPointerOver" Color="{ThemeResource SuiteAccentPressed}"/>
-                <SolidColorBrush x:Key="ToggleButtonBorderBrushCheckedPressed" Color="{ThemeResource SuiteAccentPressed}"/>
-                <SolidColorBrush x:Key="ToggleButtonForegroundChecked" Color="{ThemeResource SuiteOnAccent}"/>
-                <SolidColorBrush x:Key="ToggleButtonForegroundCheckedPointerOver" Color="{ThemeResource SuiteOnAccent}"/>
-                <SolidColorBrush x:Key="ToggleButtonForegroundCheckedPressed" Color="{ThemeResource SuiteOnAccent}"/>
-            </ResourceDictionary>
-            """);
-        Content = "Theme";
-        MinWidth = 72;
-        MinHeight = SuiteScale.ControlMinHeight;
-        Padding = new Thickness(8, 2, 8, 2);
-        AutomationProperties.SetName(this, "Theme");
-        ToolTipService.SetToolTip(this, "Switch light or dark theme");
+        Content = _icon;
+        Width = 28;
+        Height = 26;
+        MinWidth = 0;
+        MinHeight = 0;
+        Padding = new Thickness(0);
+        BorderThickness = new Thickness(0);
+        Background = new SolidColorBrush(Microsoft.UI.Colors.Transparent);
+        CornerRadius = new CornerRadius(4);
+        VerticalAlignment = VerticalAlignment.Center;
         Click += OnClick;
-        SuiteAppearance.Changed += OnAppearanceChanged;
+        Loaded += (_, _) => SuiteAppearance.Changed += OnAppearanceChanged;
         Unloaded += (_, _) => SuiteAppearance.Changed -= OnAppearanceChanged;
         Sync();
     }
@@ -67,8 +60,10 @@ public sealed class SuiteThemeSwitch : ToggleButton
 
     void Sync()
     {
-        IsChecked = SuiteAppearance.IsDark;
-        Content = SuiteAppearance.IsDark ? "Dark" : "Light";
+        // The mark shows the theme that is on, as in O-Draft: sun for light, moon for dark.
+        _icon.Kind = SuiteAppearance.IsDark ? "moon" : "sun";
+        var tip = SuiteAppearance.IsDark ? "Dark theme — click for light" : "Light theme — click for dark";
+        ToolTipService.SetToolTip(this, tip);
         AutomationProperties.SetName(this, SuiteAppearance.IsDark ? "Theme, dark" : "Theme, light");
     }
 }

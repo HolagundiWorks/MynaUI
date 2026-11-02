@@ -61,7 +61,13 @@ public sealed class SuiteBottomStatusBar : UserControl
         Content = _frame;
 
         AutomationProperties.SetName(this, "Status");
+
+        // Colours are read when the bar is built; read them again whenever the person switches light and dark.
+        Loaded += (_, _) => SuiteAppearance.Changed += OnAppearanceChanged;
+        Unloaded += (_, _) => SuiteAppearance.Changed -= OnAppearanceChanged;
     }
+
+    void OnAppearanceChanged(ElementTheme _) => DispatcherQueue.TryEnqueue(Retheme);
 
     public void Retheme()
     {

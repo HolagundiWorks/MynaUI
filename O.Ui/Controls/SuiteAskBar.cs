@@ -161,7 +161,13 @@ public sealed class SuiteAskBar : StackPanel
 
         Children.Add(ReplyHost);
         Children.Add(_pill);
+
+        // Colours are read when the bar is built; read them again whenever the person switches light and dark.
+        Loaded += (_, _) => SuiteAppearance.Changed += OnAppearanceChanged;
+        Unloaded += (_, _) => SuiteAppearance.Changed -= OnAppearanceChanged;
     }
+
+    void OnAppearanceChanged(ElementTheme _) => DispatcherQueue.TryEnqueue(Retheme);
 
     /// <summary>Pick a text file and put it into the question, after what is already typed. Larger than 64 KB: said in the reply card, nothing attached.</summary>
     async Task AttachTextFile()
