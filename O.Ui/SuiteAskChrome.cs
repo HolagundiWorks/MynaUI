@@ -8,7 +8,7 @@ namespace O.Ui;
 public static class SuiteAskChrome
 {
     public const double BarMaxWidth = 720;
-    public const double BarCornerRadius = 28;
+    public const double BarCornerRadius = BarHeight / 2; // a full pill: a radius over half the height distorts the ends
     public const double ReplyCornerRadius = 12;
     public const double BarHeight = 40;
     public const double AvatarSize = 28;

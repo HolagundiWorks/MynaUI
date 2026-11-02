@@ -95,4 +95,20 @@
     <SolidColorBrush x:Key="ListViewItemForegroundSelected" Color="{StaticResource TextPrimaryColor}"/>
     <SolidColorBrush x:Key="ListViewItemForegroundSelectedPointerOver" Color="{StaticResource TextPrimaryColor}"/>
     <SolidColorBrush x:Key="ListViewItemForegroundSelectedPressed" Color="{StaticResource TextPrimaryColor}"/>
+    <!-- Plain text and the controls that read their own brush: without these they stay the Windows black (light) or white (dark). -->
+    <SolidColorBrush x:Key="DefaultTextForegroundThemeBrush" Color="{StaticResource TextPrimaryColor}"/>
+    <SolidColorBrush x:Key="ButtonForeground" Color="{StaticResource TextPrimaryColor}"/>
+    <SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="{StaticResource TextPrimaryColor}"/>
+    <SolidColorBrush x:Key="ButtonForegroundPressed" Color="{StaticResource TextPrimaryColor}"/>
+    <SolidColorBrush x:Key="ExpanderHeaderForeground" Color="{StaticResource TextPrimaryColor}"/>
+    <SolidColorBrush x:Key="ExpanderChevronForeground" Color="{StaticResource TextPrimaryColor}"/>
+    <SolidColorBrush x:Key="TextControlForeground" Color="{StaticResource TextPrimaryColor}"/>
+    <SolidColorBrush x:Key="TextControlForegroundPointerOver" Color="{StaticResource TextPrimaryColor}"/>
+    <SolidColorBrush x:Key="TextControlForegroundFocused" Color="{StaticResource TextPrimaryColor}"/>
+    <SolidColorBrush x:Key="ToggleSwitchContentForeground" Color="{StaticResource TextPrimaryColor}"/>
+    <SolidColorBrush x:Key="ToggleSwitchHeaderForeground" Color="{StaticResource TextPrimaryColor}"/>
+    <SolidColorBrush x:Key="CheckBoxForegroundUnchecked" Color="{StaticResource TextPrimaryColor}"/>
+    <SolidColorBrush x:Key="CheckBoxForegroundChecked" Color="{StaticResource TextPrimaryColor}"/>
+    <SolidColorBrush x:Key="ComboBoxForeground" Color="{StaticResource TextPrimaryColor}"/>
+    <SolidColorBrush x:Key="MenuFlyoutItemForeground" Color="{StaticResource TextPrimaryColor}"/>
 </ResourceDictionary>
