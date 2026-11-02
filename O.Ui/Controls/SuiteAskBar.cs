@@ -147,6 +147,9 @@ public sealed class SuiteAskBar : StackPanel
                 },
             },
         };
+        // Enter sends the question; the "+" and send buttons stay in the tree (apps and tests reach them) but are not shown.
+        _avatar.Visibility = Visibility.Collapsed;
+        Send.Visibility = Visibility.Collapsed;
         var grid = (Grid)_pill.Child;
         Grid.SetColumn(_avatar, 0);
         grid.Children.Add(_avatar);
