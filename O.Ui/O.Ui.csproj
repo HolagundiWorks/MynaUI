@@ -18,6 +18,10 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.1742" />
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.6.250108002" />
+    <!-- Windows Community Toolkit (source reference: o-ui/external/WindowsCommunityToolkit, git-ignored). 8.1.x matches Windows App SDK 1.6. -->
+    <PackageReference Include="CommunityToolkit.WinUI.Controls.SettingsControls" Version="8.2.250402" />
+    <PackageReference Include="CommunityToolkit.WinUI.Controls.Segmented" Version="8.2.250402" />
+    <PackageReference Include="CommunityToolkit.WinUI.Controls.Sizers" Version="8.2.250402" />
   </ItemGroup>
   <ItemGroup>
     <!-- Mazius Display and Apfel Grotezk (SIL OFL 1.1, Collletttivo): flows to every app that references O.Ui, as Assets\Fonts\ beside its exe. -->
