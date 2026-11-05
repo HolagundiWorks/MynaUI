@@ -18,6 +18,8 @@ public sealed class SuiteWelcomeCard : UserControl
     readonly Border _card = new();
     readonly ScrollViewer _scroll = new() { Padding = new Thickness(32) };
     readonly Image _lockup = new() { HorizontalAlignment = HorizontalAlignment.Left, Stretch = Stretch.Uniform, MaxWidth = 460 };
+    // The lockup is artwork drawn for a light page (its name and role are dark), so on a dark card it sits on a light plate.
+    readonly Border _lockupPlate = new() { HorizontalAlignment = HorizontalAlignment.Left, CornerRadius = new CornerRadius(4) };
     readonly TextBlock _note = new() { TextWrapping = TextWrapping.WrapWholeWords, FontSize = SuiteScale.FontBody };
     readonly TextBlock _credit = new() { Text = Developer, FontSize = SuiteScale.FontCaption };
 
@@ -41,7 +43,8 @@ public sealed class SuiteWelcomeCard : UserControl
         _note.Text = note;
 
         var stack = new StackPanel { Spacing = 12 };
-        stack.Children.Add(_lockup);
+        _lockupPlate.Child = _lockup;
+        stack.Children.Add(_lockupPlate);
         stack.Children.Add(_note);
         stack.Children.Add(_credit);
         stack.Children.Add(Actions);
@@ -59,7 +62,12 @@ public sealed class SuiteWelcomeCard : UserControl
         Content = _scroll;
         AutomationProperties.SetName(this, "Welcome");
         Retheme();
-        Loaded += (_, _) => SuiteAppearance.Changed += OnChanged;
+        Loaded += (_, _) =>
+        {
+            SuiteAppearance.Changed += OnChanged;
+            Retheme();
+        };
+        ActualThemeChanged += (_, _) => Retheme();
         Unloaded += (_, _) => SuiteAppearance.Changed -= OnChanged;
     }
 
@@ -69,8 +77,11 @@ public sealed class SuiteWelcomeCard : UserControl
     {
         _card.Background = Brush("SurfaceBackgroundBrush", "#FFFFFF");
         _card.BorderBrush = Brush("BorderSubtleBrush", "#D8DEE8");
-        _note.Foreground = Brush("TextPrimaryBrush", "#102C80");
-        _credit.Foreground = Brush("TextSecondaryBrush", "#3E56A0");
+        _note.Foreground = Brush("TextPrimaryBrush", "#1A2332");
+        _credit.Foreground = Brush("TextSecondaryBrush", "#5D6B82");
+        var dark = ActualTheme == ElementTheme.Dark;
+        _lockupPlate.Background = dark ? Brush("", "#EEF2F8") : null;
+        _lockupPlate.Padding = dark ? new Thickness(12) : new Thickness(0);
     }
 
     static Brush Brush(string key, string hex)
