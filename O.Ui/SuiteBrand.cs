@@ -3,16 +3,16 @@ namespace O.Ui;
 /// <summary>The apps of the suite. Each has its own name and accent colour.</summary>
 public enum SuiteApp
 {
-    /// <summary>O-Studio: the office. Orange.</summary>
+    /// <summary>Kivo: the office. Orange. Identifier remains O-Studio.</summary>
     Studio,
 
-    /// <summary>O-CoreOp: quantities and costing. Wild Sand.</summary>
+    /// <summary>Falcon: quantities and costing. Wild Sand. Identifier remains O-CoreOp.</summary>
     Metra,
 
-    /// <summary>O-Draft: drafting. Dark Slate Blue (Mirage).</summary>
+    /// <summary>Tren: drafting. Dark Slate Blue (Mirage). Identifier remains O-Draft.</summary>
     Draft,
 
-    /// <summary>O-Form: 3D and BIM form. Deep Sea Green. Planned.</summary>
+    /// <summary>Finch: 3D and BIM form. Deep Sea Green. Planned. Identifier remains O-Form.</summary>
     Form,
 }
 
@@ -22,12 +22,27 @@ public static class SuiteBrand
     public const string Short = "OSAS";
     public const string FullName = "Open Source Architecture Suit";
 
+    /// <summary>User-visible name of the hub. The install folder and ticket stay <c>O-Studio</c>.</summary>
+    public const string Hub = "Kivo";
+
+    /// <summary>User-visible name of the quantities app. Identifiers stay <c>O-CoreOp</c>.</summary>
+    public const string Quantities = "Falcon";
+
+    /// <summary>User-visible name of the drafting app. Identifiers stay <c>O-Draft</c>.</summary>
+    public const string Drafting = "Tren";
+
+    /// <summary>User-visible name of the planned form app. Identifiers stay <c>O-Form</c>.</summary>
+    public const string FormName = "Finch";
+
+    /// <summary>User-visible name of the launcher. The executable stays <c>O-Studio.Launcher.exe</c>.</summary>
+    public const string Launcher = "Myna";
+
     public static string Name(SuiteApp app) => app switch
     {
-        SuiteApp.Studio => "O-Studio",
-        SuiteApp.Metra => "O-CoreOp",
-        SuiteApp.Form => "O-Form",
-        _ => "O-Draft",
+        SuiteApp.Studio => Hub,
+        SuiteApp.Metra => Quantities,
+        SuiteApp.Form => FormName,
+        _ => Drafting,
     };
 
     /// <summary>What the app is for, in a few words.</summary>

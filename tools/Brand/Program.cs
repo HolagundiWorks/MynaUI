@@ -9,10 +9,10 @@ using System.Drawing.Text;
 
 var output = args.Length > 0 ? args[0] : Path.Combine(AppContext.BaseDirectory, "brand");
 // The suite palette. The AI orb uses the four gold gradient stops.
-var mirage = ColorTranslator.FromHtml("#102C80"); // Midnight (O-Draft)
-var flame = ColorTranslator.FromHtml("#B83E16");  // Ember (O-Studio)
-var sea = ColorTranslator.FromHtml("#166040");    // Grove (O-Form)
-var sand = ColorTranslator.FromHtml("#5630A0");   // Dusk (O-CoreOp)
+var mirage = ColorTranslator.FromHtml("#102C80"); // Midnight (Tren)
+var flame = ColorTranslator.FromHtml("#B83E16");  // Ember (Kivo)
+var sea = ColorTranslator.FromHtml("#166040");    // Grove (Finch)
+var sand = ColorTranslator.FromHtml("#5630A0");   // Dusk (Falcon)
 var white = Color.White;
 var ink = mirage;
 var inkSoft = ColorTranslator.FromHtml("#3E56A0");
@@ -20,10 +20,10 @@ var glow = new[] { "#F0C840", "#D4980E", "#9B6000", "#6B4000" }.Select(ColorTran
 
 var apps = new (string Folder, string Name, Color Plate, Color Glyph)[]
 {
-    ("studio", "O-Studio", flame, white),
-    ("draft", "O-Draft", mirage, white),
-    ("form", "O-Form", sea, white),
-    ("coreop", "O-CoreOp", sand, white),
+    ("studio", "Kivo", flame, white),
+    ("draft", "Tren", mirage, white),
+    ("form", "Finch", sea, white),
+    ("coreop", "Falcon", sand, white),
 };
 
 foreach (var (folder, name, plate, glyph) in apps)
@@ -156,7 +156,7 @@ static Bitmap Lockup(string name, Color plate, Color glyph)
     using var softBrush = new SolidBrush(ColorTranslator.FromHtml("#3E56A0"));
     g.DrawString(name, title, inkBrush, 650, 150);
     g.DrawString("Open Source Architecture Suit", line, softBrush, 660, 360);
-    g.DrawString("An app of the O-Studio suite", small, softBrush, 660, 440);
+    g.DrawString("An app of Myna", small, softBrush, 660, 440);
     return bitmap;
 }
 
@@ -295,14 +295,14 @@ static Bitmap Sheet((string Folder, string Name, Color Plate, Color Glyph)[] app
     using var mono = new Font("Consolas", 13, FontStyle.Regular, GraphicsUnit.Pixel);
     using var inkBrush = new SolidBrush(mirage);
     using var dimBrush = new SolidBrush(ColorTranslator.FromHtml("#5C6B73"));
-    g.DrawString("O-Studio suite brand", title, inkBrush, 60, 36);
+    g.DrawString("Myna brand", title, inkBrush, 60, 36);
     g.DrawString("One mark. Four colours. Each app wears one; the AI agent wears all four.", text, dimBrush, 64, 112);
     var swatches = new (string Name, string App, Color Colour, Color On)[]
     {
-        ("Midnight", "O-Draft", mirage, Color.White),
-        ("Ember", "O-Studio", flame, Color.White),
-        ("Grove", "O-Form", sea, Color.White),
-        ("Dusk", "O-CoreOp", sand, Color.White),
+        ("Midnight", "Tren", mirage, Color.White),
+        ("Ember", "Kivo", flame, Color.White),
+        ("Grove", "Finch", sea, Color.White),
+        ("Dusk", "Falcon", sand, Color.White),
     };
     for (var i = 0; i < swatches.Length; i++)
     {
