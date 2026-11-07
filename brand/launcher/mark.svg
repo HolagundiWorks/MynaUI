@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 194 194" width="194" height="194">
+  <title>Myna</title>
+  <rect width="194" height="194" rx="42" fill="#B83E16"/>
+  <path fill="#EFD4CB" d="M20 118C16 96 48 88 92 96C132 104 140 124 124 140C96 172 40 170 22 146C12 134 14 124 20 118Z"/>
+  <path fill="#FFFFFF" d="M30 108C40 48 96 28 138 56C158 70 154 98 128 108C88 90 50 96 30 108Z"/>
+  <path fill="#EFD4CB" d="M58 88C96 70 136 78 150 100C132 116 90 116 58 104C48 98 48 92 58 88Z"/>
+  <path fill="#FFFFFF" d="M140 88L186 106L138 116Z"/>
+  <ellipse cx="119" cy="89" rx="7" ry="7" fill="#B83E16"/>
+</svg>
