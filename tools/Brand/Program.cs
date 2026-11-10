@@ -37,6 +37,7 @@ foreach (var (folder, name, plate, glyph) in apps)
     Drawn(256).Save(Path.Combine(dir, "mark-256.png"), ImageFormat.Png);
     Ico(Path.Combine(dir, "app.ico"), plate, glyph, folder == "launcher" ? s => Orb(s, mirage, glow) : null);
     Lockup(name, plate, glyph).Save(Path.Combine(dir, "lockup.png"), ImageFormat.Png);
+    Lockup(name, plate, glyph, plated: true).Save(Path.Combine(dir, "lockup-plated.png"), ImageFormat.Png);
     File.WriteAllText(Path.Combine(dir, "mark.svg"), Svg(name, plate, glyph));
 
     var tiles = Path.Combine(dir, "tiles");
@@ -147,10 +148,17 @@ static Bitmap Wide(int w, int h, Color plate, Color glyph)
     return bitmap;
 }
 
-static Bitmap Lockup(string name, Color plate, Color glyph)
+// plated: the lockup on a white rounded plate, for a page that may be black (its name and role are dark, so on the dark theme it would not be readable).
+static Bitmap Lockup(string name, Color plate, Color glyph, bool plated = false)
 {
     var bitmap = NewBitmap(1600, 640);
     using var g = Canvas(bitmap);
+    if (plated)
+    {
+        using var back = Rounded(0, 0, 1600, 640, 56);
+        using var white = new SolidBrush(Color.White);
+        g.FillPath(white, back);
+    }
     if (name == "Myna")
     {
         using var orb = Orb(560, ColorTranslator.FromHtml("#102C80"), new Color[4]);
