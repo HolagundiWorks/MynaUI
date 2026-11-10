@@ -34,9 +34,6 @@ public static class SuiteBrand
     /// <summary>User-visible name of the planned form app. Identifiers stay <c>O-Form</c>.</summary>
     public const string FormName = "MynaMod";
 
-    /// <summary>User-visible name of the launcher. The executable stays <c>O-Studio.Launcher.exe</c>.</summary>
-    public const string Launcher = "Myna";
-
     public static string Name(SuiteApp app) => app switch
     {
         SuiteApp.Studio => Hub,

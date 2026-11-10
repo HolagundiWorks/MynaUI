@@ -6,8 +6,7 @@ namespace O.Ui;
 
 /// <summary>
 /// Draft-parity landmark helpers for suite shells (Navigation / Main / status).
-/// <see cref="SuiteShell"/> applies Navigation/Main on its rail and stage;
-/// apps still call these for menu bars, status strips, and NavigationView chrome.
+/// Apps call these for menu bars, status strips, and NavigationView chrome.
 /// </summary>
 public static class SuiteLandmarks
 {

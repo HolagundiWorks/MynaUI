@@ -22,7 +22,7 @@ The palette, the mark, the AI agent's orb and the type are described in `docs/BR
 | `SuiteBrand.cs` | Suite and app names (`SuiteApp.Studio`, `.Metra` = MynaOps assembly alias, `.Draft`, `.Form`) |
 | `SuiteFonts.cs` | The two typefaces: Apfel Grotezk for names (free stand-in for Studio Grotesk), Mazius Display for large text, both bundled |
 | `SuiteLandmarks.cs` | Draft-parity landmark helpers (`Navigation` / `Main` / `status`) |
-| `SuiteShell.cs`, `SuiteActivityRail.cs`, `SuitePageHeader.cs`, `SuiteContentSheet.cs` | Launcher-style rail + stage chrome (landmarks built in) |
+| `SuitePageHeader.cs` | Title + supporting line for a page (the launcher's rail and stage, `SuiteShell`, `SuiteActivityRail`, `SuiteContentSheet`, were removed with the Myna launcher on 2026-11-11) |
 | `SuiteIcon.cs`, `SuiteIcons.cs`, `SuiteScale.cs` | Shared glyphs and spacing |
 | `SuiteAppearance.cs`, `SuiteMotion.cs`, `Controls/SuiteThemeSwitch.cs` | Shared light/dark preference (`%LOCALAPPDATA%\OSAS\appearance.json`) and motion preference |
 | `Widgets/PomodoroWidget.cs`, `Widgets/CalculatorWidget.cs` | Floating suite widgets (`ShowOrFocus`) |
@@ -65,10 +65,10 @@ Reference the project, then in `App.xaml`:
 </ResourceDictionary.ThemeDictionaries>
 ```
 
-On each navigation pane: `O.Ui.SuiteNavigation.Apply(navigationView, O.Ui.SuiteApp.Studio);`. For Myna rail/stage host: `new SuiteShell()` (landmarks applied on rail and stage). Theme: `SuiteThemeSwitch.Attach(window)` or `SuiteAppearance.Apply(window)`.
+On each navigation pane: `O.Ui.SuiteNavigation.Apply(navigationView, O.Ui.SuiteApp.Studio);`. Theme: `SuiteThemeSwitch.Attach(window)` or `SuiteAppearance.Apply(window)`.
 
 ## Structure the apps share
-A menu bar, a left navigation pane (or activity rail) with destinations, and the page beside it. MynaHub and MynaOps use NavigationView; Myna uses `SuiteShell` / `SuiteActivityRail`. The library holds the look; each app keeps its own pages.
+A menu bar, a left navigation pane (or activity rail) with destinations, and the page beside it. MynaHub and MynaOps use their own tab rows over the page; MynaCAD its own shell. (The Myna launcher's rail was removed on 2026-11-11.) The library holds the look; each app keeps its own pages.
 
 ## Building
 The apps reference this project by relative path (`..\..\..\o-ui\O.Ui\O.Ui.csproj`), so clone `HolagundiWorks/O-UI` beside them as the folder name `o-ui`. The assembly name remains `O.Ui`. It targets Windows App SDK 1.6, the lowest version either app uses.

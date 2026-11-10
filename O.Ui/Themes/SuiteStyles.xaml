@@ -66,17 +66,6 @@
             <Thickness x:Key="TextControlThemePadding">8,2,8,2</Thickness>
             <Thickness x:Key="ComboBoxPadding">8,2,8,2</Thickness>
             <Thickness x:Key="MenuFlyoutItemThemePadding">8,2,8,2</Thickness>
-            <!-- Compact icon button for the activity rail (launcher About / destinations). -->
-            <Style x:Key="SuiteRailButtonStyle" TargetType="Button" BasedOn="{StaticResource DefaultButtonStyle}">
-                <Setter Property="Width" Value="32"/>
-                <Setter Property="Height" Value="32"/>
-                <Setter Property="Padding" Value="0"/>
-                <Setter Property="MinWidth" Value="32"/>
-                <Setter Property="MinHeight" Value="32"/>
-                <Setter Property="BorderThickness" Value="0"/>
-                <Setter Property="Background" Value="Transparent"/>
-                <Setter Property="CornerRadius" Value="4"/>
-            </Style>
             <Style x:Key="PageTitleStyle" TargetType="TextBlock" BasedOn="{StaticResource TitleTextBlockStyle}">
                 <Setter Property="FontFamily" Value="Segoe UI Variable, Segoe UI, Nirmala UI, Noto Sans Devanagari"/>
                 <Setter Property="FontSize" Value="18"/>

@@ -31,7 +31,8 @@ foreach (var (folder, name, plate, glyph) in apps)
 {
     var dir = Path.Combine(output, folder);
     Directory.CreateDirectory(dir);
-    // Myna itself (the suite and its launcher) wears the AI orb: the mark lit by all four app colours. Every app wears the mark on its own colour.
+    // The folder "launcher" (kept under that name) holds the AI agent's orb: the mark lit by all four app colours. The launcher app was removed on
+    // 2026-11-11; the orb stays as the AI agent's mark in MynaOps and MynaCAD. Every app wears the mark on its own colour.
     Bitmap Drawn(int s, bool full = true) => folder == "launcher" ? Orb(s, mirage, glow) : Mark(s, plate, glyph, full);
     Drawn(1024).Save(Path.Combine(dir, "mark.png"), ImageFormat.Png);
     Drawn(256).Save(Path.Combine(dir, "mark-256.png"), ImageFormat.Png);
