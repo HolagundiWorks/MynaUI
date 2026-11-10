@@ -1,15 +1,15 @@
 # O-UI
 
-WinUI 3 class library **`O.Ui`** (folder `o-ui/O.Ui/`). **HCW.ui / `Hcw.Ui` is retired** — use this repository only. The shared design of the **Kivo suite**: colours, text styles, control defaults, marks, suite shell chrome, and a few layout controls. User-visible app names and file terms match **`docs/SUITE.md`** in any suite app repo (section 7). Kivo (the office app) and Falcon (quantities, estimates and billing) use it now; Myna uses the activity-rail shell; Tren (drafting) is meant to follow. Targets .NET 8 under the MIT licence (the marks in `brand/` are separate, see `brand/LICENSE.md`). MIT code can be used inside Falcon, which is AGPL-3.0, and inside Tren, which is MIT or Apache-2.0.
+WinUI 3 class library **`O.Ui`** (folder `o-ui/O.Ui/`). **HCW.ui / `Hcw.Ui` is retired** — use this repository only. The shared design of the **MynaHub suite**: colours, text styles, control defaults, marks, suite shell chrome, and a few layout controls. User-visible app names and file terms match **`docs/SUITE.md`** in any suite app repo (section 7). MynaHub (the office app) and MynaOps (quantities, estimates and billing) use it now; Myna uses the activity-rail shell; MynaCAD (drafting) is meant to follow. Targets .NET 8 under the MIT licence (the marks in `brand/` are separate, see `brand/LICENSE.md`). MIT code can be used inside MynaOps, which is AGPL-3.0, and inside MynaCAD, which is MIT or Apache-2.0.
 
 | App | Accent file | Colour |
 |---|---|---|
-| Kivo | `SuiteAccent.Orange` | Ember `#B83E16`, white text on it |
-| Tren | `SuiteAccent.Mirage` | Midnight `#102C80`, white text on it |
-| Finch | `SuiteAccent.Sea` | Grove `#166040`, white text on it (planned app) |
-| Falcon | `SuiteAccent.Sand` | Dusk `#5630A0`, white text on it |
+| MynaHub | `SuiteAccent.Orange` | Ember `#B83E16`, white text on it |
+| MynaCAD | `SuiteAccent.Mirage` | Midnight `#102C80`, white text on it |
+| MynaMod | `SuiteAccent.Sea` | Grove `#166040`, white text on it (planned app) |
+| MynaOps | `SuiteAccent.Sand` | Dusk `#5630A0`, white text on it |
 
-The palette, the mark, the AI agent's orb and the type are described in `docs/BRANDING.md` in the Kivo repository.
+The palette, the mark, the AI agent's orb and the type are described in `docs/BRANDING.md` in the MynaHub repository.
 
 ## What is in it
 | File | What it does |
@@ -19,7 +19,7 @@ The palette, the mark, the AI agent's orb and the type are described in `docs/BR
 | `Themes/SuiteLight.<Accent>.xaml`, `SuiteDark.<Accent>.xaml`, `SuiteHighContrast.xaml` | Light/dark theme dictionaries per accent, plus high contrast. Generated from `Themes/templates` by `tools/make-variants.mjs` |
 | `Themes/SuiteStyles.xaml` | Text styles, control defaults, `SuiteCardGap`, `SuiteRailButtonStyle`, card and chip |
 | `Themes/SuiteNavigation.<Accent>.xaml`, `SuiteNavigation.cs` | The look of the left navigation pane |
-| `SuiteBrand.cs` | Suite and app names (`SuiteApp.Studio`, `.Metra` = Falcon assembly alias, `.Draft`, `.Form`) |
+| `SuiteBrand.cs` | Suite and app names (`SuiteApp.Studio`, `.Metra` = MynaOps assembly alias, `.Draft`, `.Form`) |
 | `SuiteFonts.cs` | The two typefaces: Apfel Grotezk for names (free stand-in for Studio Grotesk), Mazius Display for large text, both bundled |
 | `SuiteLandmarks.cs` | Draft-parity landmark helpers (`Navigation` / `Main` / `status`) |
 | `SuiteShell.cs`, `SuiteActivityRail.cs`, `SuitePageHeader.cs`, `SuiteContentSheet.cs` | Launcher-style rail + stage chrome (landmarks built in) |
@@ -68,7 +68,7 @@ Reference the project, then in `App.xaml`:
 On each navigation pane: `O.Ui.SuiteNavigation.Apply(navigationView, O.Ui.SuiteApp.Studio);`. For Myna rail/stage host: `new SuiteShell()` (landmarks applied on rail and stage). Theme: `SuiteThemeSwitch.Attach(window)` or `SuiteAppearance.Apply(window)`.
 
 ## Structure the apps share
-A menu bar, a left navigation pane (or activity rail) with destinations, and the page beside it. Kivo and Falcon use NavigationView; Myna uses `SuiteShell` / `SuiteActivityRail`. The library holds the look; each app keeps its own pages.
+A menu bar, a left navigation pane (or activity rail) with destinations, and the page beside it. MynaHub and MynaOps use NavigationView; Myna uses `SuiteShell` / `SuiteActivityRail`. The library holds the look; each app keeps its own pages.
 
 ## Building
 The apps reference this project by relative path (`..\..\..\o-ui\O.Ui\O.Ui.csproj`), so clone `HolagundiWorks/O-UI` beside them as the folder name `o-ui`. The assembly name remains `O.Ui`. It targets Windows App SDK 1.6, the lowest version either app uses.

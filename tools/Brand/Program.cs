@@ -1,5 +1,5 @@
 // Draws each app's bird and writes PNG, ICO and lockup files:   dotnet run --project tools/Brand -- <output folder>
-// The bird is that app's own mark, on a plate in the app's colour (docs/BRANDING.md in Kivo). The AI agent keeps its own artwork.
+// The bird is that app's own mark, on a plate in the app's colour (docs/BRANDING.md in MynaHub). The AI agent keeps its own artwork.
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
@@ -7,10 +7,10 @@ using System.Drawing.Text;
 
 var output = args.Length > 0 ? args[0] : Path.Combine(AppContext.BaseDirectory, "brand");
 // The suite palette. The AI orb uses the four gold gradient stops.
-var mirage = ColorTranslator.FromHtml("#102C80"); // Midnight (Tren)
-var flame = ColorTranslator.FromHtml("#B83E16");  // Ember (Kivo)
-var sea = ColorTranslator.FromHtml("#166040");    // Grove (Finch)
-var sand = ColorTranslator.FromHtml("#5630A0");   // Dusk (Falcon)
+var mirage = ColorTranslator.FromHtml("#102C80"); // Midnight (MynaCAD)
+var flame = ColorTranslator.FromHtml("#B83E16");  // Ember (MynaHub)
+var sea = ColorTranslator.FromHtml("#166040");    // Grove (MynaMod)
+var sand = ColorTranslator.FromHtml("#5630A0");   // Dusk (MynaOps)
 var white = Color.White;
 var ink = mirage;
 var inkSoft = ColorTranslator.FromHtml("#3E56A0");
@@ -18,10 +18,10 @@ var glow = new[] { "#F0C840", "#D4980E", "#9B6000", "#6B4000" }.Select(ColorTran
 
 var apps = new (string Folder, string Name, Color Plate, Color Glyph)[]
 {
-    ("studio", "Kivo", flame, white),
-    ("draft", "Tren", mirage, white),
-    ("form", "Finch", sea, white),
-    ("coreop", "Falcon", sand, white),
+    ("studio", "MynaHub", flame, white),
+    ("draft", "MynaCAD", mirage, white),
+    ("form", "MynaMod", sea, white),
+    ("coreop", "MynaOps", sand, white),
     ("launcher", "Myna", flame, white),
 };
 
@@ -130,7 +130,7 @@ static Bitmap Lockup(string name, Color plate, Color glyph)
     using var inkBrush = new SolidBrush(ColorTranslator.FromHtml("#102C80"));
     using var softBrush = new SolidBrush(ColorTranslator.FromHtml("#3E56A0"));
     g.DrawString(name, title, inkBrush, 650, 150);
-    g.DrawString("Kivo suite", line, softBrush, 660, 360);
+    g.DrawString("MynaHub suite", line, softBrush, 660, 360);
     g.DrawString("An app of Myna", small, softBrush, 660, 440);
     return bitmap;
 }
@@ -274,10 +274,10 @@ static Bitmap Sheet((string Folder, string Name, Color Plate, Color Glyph)[] app
     g.DrawString("One bird for each app, on that app's colour. The AI agent keeps its own mark.", text, dimBrush, 64, 112);
     var swatches = new (string Name, string App, Color Colour, Color On)[]
     {
-        ("Midnight", "Tren", mirage, Color.White),
-        ("Ember", "Kivo", flame, Color.White),
-        ("Grove", "Finch", sea, Color.White),
-        ("Dusk", "Falcon", sand, Color.White),
+        ("Midnight", "MynaCAD", mirage, Color.White),
+        ("Ember", "MynaHub", flame, Color.White),
+        ("Grove", "MynaMod", sea, Color.White),
+        ("Dusk", "MynaOps", sand, Color.White),
     };
     for (var i = 0; i < swatches.Length; i++)
     {

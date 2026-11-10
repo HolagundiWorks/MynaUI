@@ -12,23 +12,23 @@ static class Birds
         var wash = Mix(plate, Color.White, 0.78f);
         switch (name)
         {
-            case "Tren":
-                Tren(g, plate, white);
+            case "MynaCAD":
+                MynaCAD(g, plate, white);
                 break;
-            case "Falcon":
-                Falcon(g, plate, white);
+            case "MynaOps":
+                MynaOps(g, plate, white);
                 break;
-            case "Finch":
-                Finch(g, plate, white, wash);
+            case "MynaMod":
+                MynaMod(g, plate, white, wash);
                 break;
-            case "Kivo":
-                Kivo(g, plate, white, wash);
+            case "MynaHub":
+                MynaHub(g, plate, white, wash);
                 break;
             case "Myna":
                 Myna(g, plate, white, wash);
                 break;
             default:
-                Tren(g, plate, white);
+                MynaCAD(g, plate, white);
                 break;
         }
     }
@@ -39,9 +39,9 @@ static class Birds
         var fill = Hex(plate);
         var bird = name switch
         {
-            "Falcon" => FalconSvg(fill),
-            "Finch" => FinchSvg(fill, wash),
-            "Kivo" => KivoSvg(fill, wash),
+            "MynaOps" => FalconSvg(fill),
+            "MynaMod" => FinchSvg(fill, wash),
+            "MynaHub" => KivoSvg(fill, wash),
             "Myna" => MynaSvg(fill, wash),
             _ => TrenSvg(fill),
         };
@@ -54,7 +54,7 @@ static class Birds
 """;
     }
 
-    static void Tren(Graphics g, Color plate, Color white)
+    static void MynaCAD(Graphics g, Color plate, Color white)
     {
         Fill(g, white, p =>
         {
@@ -70,7 +70,7 @@ static class Birds
         Hole(g, plate, 132, 64, 12, 12);
     }
 
-    static void Falcon(Graphics g, Color plate, Color white)
+    static void MynaOps(Graphics g, Color plate, Color white)
     {
         Fill(g, white, p =>
         {
@@ -86,7 +86,7 @@ static class Birds
         Fill(g, white, p => p.AddEllipse(116, 71, 5, 5));
     }
 
-    static void Finch(Graphics g, Color plate, Color white, Color wash)
+    static void MynaMod(Graphics g, Color plate, Color white, Color wash)
     {
         Fill(g, wash, p =>
         {
@@ -107,7 +107,7 @@ static class Birds
         Hole(g, plate, 114, 72, 14, 14);
     }
 
-    static void Kivo(Graphics g, Color plate, Color white, Color wash)
+    static void MynaHub(Graphics g, Color plate, Color white, Color wash)
     {
         Fill(g, wash, p =>
         {

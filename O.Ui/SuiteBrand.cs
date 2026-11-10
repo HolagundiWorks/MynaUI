@@ -3,16 +3,16 @@ namespace O.Ui;
 /// <summary>The apps of the suite. Each has its own name and accent colour.</summary>
 public enum SuiteApp
 {
-    /// <summary>Kivo: the office. Orange. Identifier remains O-Studio.</summary>
+    /// <summary>MynaHub: the office. Orange. Identifier remains O-Studio.</summary>
     Studio,
 
-    /// <summary>Falcon: quantities and costing. Wild Sand. Identifier remains O-CoreOp.</summary>
+    /// <summary>MynaOps: quantities and costing. Wild Sand. Identifier remains O-CoreOp.</summary>
     Metra,
 
-    /// <summary>Tren: drafting. Dark Slate Blue (Mirage). Identifier remains O-Draft.</summary>
+    /// <summary>MynaCAD: drafting. Dark Slate Blue (Mirage). Identifier remains O-Draft.</summary>
     Draft,
 
-    /// <summary>Finch: 3D and BIM form. Deep Sea Green. Planned. Identifier remains O-Form.</summary>
+    /// <summary>MynaMod: 3D and BIM form. Deep Sea Green. Planned. Identifier remains O-Form.</summary>
     Form,
 }
 
@@ -23,16 +23,16 @@ public static class SuiteBrand
     public const string FullName = "Open Source Architecture Suit";
 
     /// <summary>User-visible name of the hub. The install folder and ticket stay <c>O-Studio</c>.</summary>
-    public const string Hub = "Kivo";
+    public const string Hub = "MynaHub";
 
     /// <summary>User-visible name of the quantities app. Identifiers stay <c>O-CoreOp</c>.</summary>
-    public const string Quantities = "Falcon";
+    public const string Quantities = "MynaOps";
 
     /// <summary>User-visible name of the drafting app. Identifiers stay <c>O-Draft</c>.</summary>
-    public const string Drafting = "Tren";
+    public const string Drafting = "MynaCAD";
 
     /// <summary>User-visible name of the planned form app. Identifiers stay <c>O-Form</c>.</summary>
-    public const string FormName = "Finch";
+    public const string FormName = "MynaMod";
 
     /// <summary>User-visible name of the launcher. The executable stays <c>O-Studio.Launcher.exe</c>.</summary>
     public const string Launcher = "Myna";
