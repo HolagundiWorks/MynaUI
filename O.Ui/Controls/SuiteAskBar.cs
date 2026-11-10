@@ -224,19 +224,19 @@ public sealed class SuiteAskBar : StackPanel
     static void ApplyReplyChrome(Border frame, TextBlock text)
     {
         frame.Background = ThemeBrush("SurfaceElevatedBrush", "SurfaceBackgroundBrush", "#FFFFFF");
-        frame.BorderBrush = ThemeBrush("BorderDefaultBrush", "BorderSubtleBrush", "#D8DEE8");
+        frame.BorderBrush = ThemeBrush("BorderDefaultBrush", "BorderSubtleBrush", "#D9D9D9");
         text.Foreground = ThemeBrush("TextPrimaryBrush", null, "#102C80");
     }
 
     static void ApplyPillChrome(Border pill)
     {
         pill.Background = ThemeBrush("SurfaceElevatedBrush", "SurfaceBackgroundBrush", "#FFFFFF");
-        pill.BorderBrush = ThemeBrush("BorderDefaultBrush", "BorderSubtleBrush", "#D8DEE8");
+        pill.BorderBrush = ThemeBrush("BorderDefaultBrush", "BorderSubtleBrush", "#D9D9D9");
     }
 
     static void ApplyAvatarChrome(Border avatar, FontIcon icon)
     {
-        avatar.Background = ThemeBrush("SurfaceSecondaryBrush", "HoverFillColor", "#F1F5FA");
+        avatar.Background = ThemeBrush("SurfaceSecondaryBrush", "HoverFillColor", "#F0F0F0");
         icon.Foreground = ThemeBrush("TextSecondaryBrush", null, "#64748B");
     }
 

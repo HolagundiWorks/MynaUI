@@ -1,5 +1,7 @@
-// Draws each app's bird and writes PNG, ICO and lockup files:   dotnet run --project tools/Brand -- <output folder>
-// The bird is that app's own mark, on a plate in the app's colour (docs/BRANDING.md in MynaHub). The AI agent keeps its own artwork.
+// Draws the suite's marks and writes PNG, ICO and lockup files for each app:   dotnet run --project tools/Brand -- <output folder>
+// The mark is the same in every app, redrawn as geometry so it can be made in any colour at any size: a half ring open to the right, a smaller
+// half ring below, and a ring at the centre, on a plate in the app's colour (docs/BRANDING.md in the MynaHub repository). The AI agent has its own artwork:
+// the ring, lit, turning through all four colours.
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
@@ -22,25 +24,27 @@ var apps = new (string Folder, string Name, Color Plate, Color Glyph)[]
     ("draft", "MynaCAD", mirage, white),
     ("form", "MynaMod", sea, white),
     ("coreop", "MynaOps", sand, white),
-    ("launcher", "Myna", flame, white),
+    ("launcher", "Myna", ColorTranslator.FromHtml("#000000"), white),
 };
 
 foreach (var (folder, name, plate, glyph) in apps)
 {
     var dir = Path.Combine(output, folder);
     Directory.CreateDirectory(dir);
-    Mark(name, 1024, plate, glyph).Save(Path.Combine(dir, "mark.png"), ImageFormat.Png);
-    Mark(name, 256, plate, glyph).Save(Path.Combine(dir, "mark-256.png"), ImageFormat.Png);
-    Ico(Path.Combine(dir, "app.ico"), name, plate, glyph);
+    // Myna itself (the suite and its launcher) wears the AI orb: the mark lit by all four app colours. Every app wears the mark on its own colour.
+    Bitmap Drawn(int s, bool full = true) => folder == "launcher" ? Orb(s, mirage, glow) : Mark(s, plate, glyph, full);
+    Drawn(1024).Save(Path.Combine(dir, "mark.png"), ImageFormat.Png);
+    Drawn(256).Save(Path.Combine(dir, "mark-256.png"), ImageFormat.Png);
+    Ico(Path.Combine(dir, "app.ico"), plate, glyph, folder == "launcher" ? s => Orb(s, mirage, glow) : null);
     Lockup(name, plate, glyph).Save(Path.Combine(dir, "lockup.png"), ImageFormat.Png);
-    File.WriteAllText(Path.Combine(dir, "mark.svg"), Birds.Svg(name, plate));
+    File.WriteAllText(Path.Combine(dir, "mark.svg"), Svg(name, plate, glyph));
 
     var tiles = Path.Combine(dir, "tiles");
     Directory.CreateDirectory(tiles);
     foreach (var (file, size) in new[] { ("Square44x44Logo.png", 44), ("Square71x71Logo.png", 71), ("Square150x150Logo.png", 150), ("Square310x310Logo.png", 310), ("StoreLogo.png", 50), ("logo.png", 150), ("logo_plate.png", 256) })
-        Mark(name, size, plate, glyph, full: file != "logo_plate.png").Save(Path.Combine(tiles, file), ImageFormat.Png);
-    Wide(name, 310, 150, plate, glyph).Save(Path.Combine(tiles, "Wide310x150Logo.png"), ImageFormat.Png);
-    Wide(name, 620, 300, plate, glyph).Save(Path.Combine(tiles, "SplashScreen.png"), ImageFormat.Png);
+        Drawn(size, file != "logo_plate.png").Save(Path.Combine(tiles, file), ImageFormat.Png);
+    Wide(310, 150, plate, glyph).Save(Path.Combine(tiles, "Wide310x150Logo.png"), ImageFormat.Png);
+    Wide(620, 300, plate, glyph).Save(Path.Combine(tiles, "SplashScreen.png"), ImageFormat.Png);
 }
 
 var orbDir = Path.Combine(output, "ai");
@@ -48,12 +52,28 @@ Directory.CreateDirectory(orbDir);
 foreach (var size in new[] { 1024, 256, 64 })
     Orb(size, mirage, glow).Save(Path.Combine(orbDir, $"ai-orb-{size}.png"), ImageFormat.Png);
 File.WriteAllText(Path.Combine(orbDir, "ai-orb.svg"), OrbSvg(mirage, glow));
-Sheet(apps, mirage, flame, sea, sand, glow).Save(Path.Combine(output, "brand-sheet.png"), ImageFormat.Png);
+Sheet(apps.Take(4).ToArray(), mirage, flame, sea, sand, glow).Save(Path.Combine(output, "brand-sheet.png"), ImageFormat.Png);
 Console.WriteLine("Written to " + output);
 
 // The same mark as geometry in a 194 by 194 box: a half ring open to the right (radius 69, stroke 18), a smaller half ring below
 // the centre (radius 50, stroke 12), and a ring at the centre (radius 18.5, stroke 5), all white, centred at (107, 96).
 static string Hex(Color c) => $"#{c.R:X2}{c.G:X2}{c.B:X2}";
+
+static string Svg(string name, Color plate, Color glyph)
+{
+    var fill = Hex(plate);
+    return $"""
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 194 194" width="194" height="194">
+  <title>{name}</title>
+  <rect width="194" height="194" rx="42" fill="{fill}"/>
+  <g fill="none" stroke="{Hex(glyph)}">
+    <path d="M107 27A69 69 0 0 0 107 165" stroke-width="18"/>
+    <path d="M57 96A50 50 0 0 0 157 96" stroke-width="12"/>
+    <circle cx="107" cy="96" r="18.5" stroke-width="5"/>
+  </g>
+</svg>
+""";
+}
 
 static Bitmap NewBitmap(int w, int h) => new(w, h, PixelFormat.Format32bppArgb);
 
@@ -68,24 +88,31 @@ static Graphics Canvas(Bitmap bitmap)
     return g;
 }
 
-// The bird is drawn in a 194 box. The transform fits that box to the target square.
-static void DrawMark(Graphics g, float x, float y, float size, string name, Color plate, bool full)
+// The glyph is drawn in the coordinates of the original 256 pixel plate (plate 31..224); the transform fits the plate to the target square.
+static void DrawMark(Graphics g, float x, float y, float size, Color plate, Color glyph, bool full)
 {
     var state = g.Save();
     var s = size / 194f;
     g.TranslateTransform(x, y);
     g.ScaleTransform(s, s);
+    g.TranslateTransform(-31, -31);
     using (var brush = new SolidBrush(plate))
     {
         if (full)
         {
-            using var path = Rounded(0, 0, 194, 194, 42);
+            using var path = Rounded(31, 31, 194, 194, 34);
             g.FillPath(brush, path);
         }
         else
-            g.FillRectangle(brush, 0, 0, 194, 194);
+            g.FillRectangle(brush, 31, 31, 194, 194);
     }
-    Birds.Paint(g, name, plate);
+    using var pen = new Pen(glyph) { StartCap = LineCap.Flat, EndCap = LineCap.Flat };
+    pen.Width = 18;
+    g.DrawArc(pen, 138 - 69, 127 - 69, 138, 138, 90, 180); // the C: a half ring open to the right
+    pen.Width = 12;
+    g.DrawArc(pen, 138 - 50, 127 - 50, 100, 100, 0, 180); // the smaller half ring below the centre
+    pen.Width = 5;
+    g.DrawEllipse(pen, 138 - 18.5f, 127 - 18.5f, 37, 37); // the ring at the centre
     g.Restore(state);
 }
 
@@ -100,22 +127,23 @@ static GraphicsPath Rounded(float x, float y, float w, float h, float r)
     return path;
 }
 
-static Bitmap Mark(string name, int size, Color plate, Color glyph, bool full = true)
+static Bitmap Mark(int size, Color plate, Color glyph, bool full = true)
 {
     var bitmap = NewBitmap(size, size);
     using var g = Canvas(bitmap);
-    DrawMark(g, 0, 0, size, name, plate, full);
+    DrawMark(g, 0, 0, size, plate, glyph, full);
     return bitmap;
 }
 
-static Bitmap Wide(string name, int w, int h, Color plate, Color glyph)
+static Bitmap Wide(int w, int h, Color plate, Color glyph)
 {
     var bitmap = NewBitmap(w, h);
     using var g = Canvas(bitmap);
     using (var brush = new SolidBrush(plate))
         g.FillRectangle(brush, 0, 0, w, h);
-    var size = h * 0.72f;
-    DrawMark(g, (w - size) / 2, (h - size) / 2, size, name, plate, full: false);
+    var size = h * 0.62f;
+    // the plate is the same colour as the background, so only the glyph shows
+    DrawMark(g, (w - size) / 2, (h - size) / 2, size, plate, glyph, full: false);
     return bitmap;
 }
 
@@ -123,25 +151,39 @@ static Bitmap Lockup(string name, Color plate, Color glyph)
 {
     var bitmap = NewBitmap(1600, 640);
     using var g = Canvas(bitmap);
-    DrawMark(g, 40, 40, 560, name, plate, full: true);
+    if (name == "Myna")
+    {
+        using var orb = Orb(560, ColorTranslator.FromHtml("#102C80"), new Color[4]);
+        g.DrawImage(orb, 40, 40, 560, 560);
+    }
+    else
+        DrawMark(g, 40, 40, 560, plate, glyph, full: true);
     using var title = new Font("Segoe UI Semibold", 150, FontStyle.Regular, GraphicsUnit.Pixel);
     using var line = new Font("Segoe UI", 52, FontStyle.Regular, GraphicsUnit.Pixel);
     using var small = new Font("Segoe UI Semibold", 44, FontStyle.Regular, GraphicsUnit.Pixel);
     using var inkBrush = new SolidBrush(ColorTranslator.FromHtml("#102C80"));
     using var softBrush = new SolidBrush(ColorTranslator.FromHtml("#3E56A0"));
     g.DrawString(name, title, inkBrush, 650, 150);
-    g.DrawString("MynaHub suite", line, softBrush, 660, 360);
-    g.DrawString("An app of Myna", small, softBrush, 660, 440);
+    var useCase = name switch
+    {
+        "MynaHub" => "Company, people and approvals",
+        "MynaCAD" => "Drafting",
+        "MynaOps" => "Quantities, estimates and billing",
+        "MynaMod" => "3D and BIM modelling",
+        _ => "Architecture, engineering and operations",
+    };
+    g.DrawString(useCase, line, softBrush, 660, 360);
+    g.DrawString(name == "Myna" ? "The suite" : "An app of Myna", small, softBrush, 660, 440);
     return bitmap;
 }
 
 // An ICO file whose images are PNGs, which Windows has read since Vista.
-static void Ico(string path, string name, Color plate, Color glyph)
+static void Ico(string path, Color plate, Color glyph, Func<int, Bitmap>? draw = null)
 {
     var sizes = new[] { 16, 24, 32, 48, 64, 128, 256 };
     var images = sizes.Select(s =>
     {
-        using var bitmap = Mark(name, s, plate, glyph);
+        using var bitmap = draw?.Invoke(s) ?? Mark(s, plate, glyph);
         using var stream = new MemoryStream();
         bitmap.Save(stream, ImageFormat.Png);
         return stream.ToArray();
@@ -271,7 +313,7 @@ static Bitmap Sheet((string Folder, string Name, Color Plate, Color Glyph)[] app
     using var inkBrush = new SolidBrush(mirage);
     using var dimBrush = new SolidBrush(ColorTranslator.FromHtml("#5C6B73"));
     g.DrawString("Myna brand", title, inkBrush, 60, 36);
-    g.DrawString("One bird for each app, on that app's colour. The AI agent keeps its own mark.", text, dimBrush, 64, 112);
+    g.DrawString("One mark. Four colours. Each app wears one; Myna and the AI agent wear all four.", text, dimBrush, 64, 112);
     var swatches = new (string Name, string App, Color Colour, Color On)[]
     {
         ("Midnight", "MynaCAD", mirage, Color.White),
@@ -295,13 +337,13 @@ static Bitmap Sheet((string Folder, string Name, Color Plate, Color Glyph)[] app
         g.DrawString($"HEX {Hex(colour)}    RGB {colour.R}, {colour.G}, {colour.B}", mono, onBrush, x + 22, y + 184);
     }
 
-    g.DrawString("The bird of each app", head, inkBrush, 60, 430);
+    g.DrawString("The mark in each app", head, inkBrush, 60, 430);
     for (var i = 0; i < apps.Length; i++)
     {
         var (_, name, plate, glyph) = apps[i];
-        using var mark = Mark(name, 256, plate, glyph);
-        g.DrawImage(mark, 40 + i * 310, 485, 200, 200);
-        g.DrawString(name, head, inkBrush, 40 + i * 310, 700);
+        using var mark = Mark(256, plate, glyph);
+        g.DrawImage(mark, 60 + i * 380, 485, 200, 200);
+        g.DrawString(name, head, inkBrush, 60 + i * 380, 700);
     }
 
     g.DrawString("The AI agent", head, inkBrush, 60, 780);

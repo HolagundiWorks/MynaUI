@@ -1,24 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  Suite neutrals — cool soft-UI glass aligned with O-Draft ColorTokens (AppBackground #E4EAF2).
-  Each app adds its own accent (SuiteAccent.Orange, .Blue or .Black.xaml).
-  Accent colours are for fills and marks; text in the accent colour uses SuiteAccentText.
-  Ink is Midnight #102C80 (brand guide, section 5): 12.4:1 on white, 10.2:1 on BG (#E4EAF2).
-  Ink soft is Midnight soft #3E56A0: 6.9:1 on white, 5.7:1 on BG, 6.1:1 on Sidebar (AA ≥4.5:1 — WCAG 1.4.3).
-  EdgeStrong: 3.28:1 on BG ✓, 3.97:1 on Surface ✓ (WCAG 1.4.11 non-text ≥3:1).
+  Suite neutrals: pure white (2026-11-10). Surfaces are #FFFFFF, text is #000000; the boundary between regions is an edge line, not a tint.
+  Each app adds its own accent (SuiteAccent.<App>.xaml). Accent colours are for fills and marks; text in the accent colour uses SuiteAccentText.
+  InkSoft #4D4D4D is 8.4:1 on white. EdgeStrong #767676 is 4.5:1 on white (WCAG 1.4.11 non-text >= 3:1 with room). Edge #D9D9D9 is decoration only.
 -->
 <ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <Color x:Key="SuiteBackground">#E4EAF2</Color>
-    <Color x:Key="SuiteSidebar">#EEF2F8</Color>
+    <Color x:Key="SuiteBackground">#FFFFFF</Color>
+    <Color x:Key="SuiteSidebar">#FFFFFF</Color>
     <Color x:Key="SuiteSurface">#FFFFFF</Color>
-    <Color x:Key="SuiteInk">#102C80</Color>
+    <Color x:Key="SuiteInk">#000000</Color>
     <!-- Was #64748B, then #546B88 (4.52:1 on BG, the edge of AA); Midnight soft is in the brand and has headroom. -->
-    <Color x:Key="SuiteInkSoft">#3E56A0</Color>
-    <Color x:Key="SuiteEdge">#D8DEE8</Color>
+    <Color x:Key="SuiteInkSoft">#4D4D4D</Color>
+    <Color x:Key="SuiteEdge">#D9D9D9</Color>
     <!-- Was #94A3B8 (2.12:1 on BG — WCAG 1.4.11 fail). Darkened for ≥3:1 non-text contrast. -->
-    <Color x:Key="SuiteEdgeStrong">#788090</Color>
-    <Color x:Key="SuiteHover">#F1F5FA</Color>
+    <Color x:Key="SuiteEdgeStrong">#767676</Color>
+    <Color x:Key="SuiteHover">#F0F0F0</Color>
     <Color x:Key="SuiteDanger">#C42B1C</Color>
 </ResourceDictionary>

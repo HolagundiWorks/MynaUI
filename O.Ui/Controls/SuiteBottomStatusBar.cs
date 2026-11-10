@@ -77,8 +77,8 @@ public sealed class SuiteBottomStatusBar : UserControl
 
     static void ApplyChrome(Border frame)
     {
-        frame.Background = ThemeBrush("SurfaceStatusBrush", "SidebarBackgroundBrush", "#EEF2F8");
-        frame.BorderBrush = ThemeBrush("BorderSubtleBrush", "BorderDefaultBrush", "#D8DEE8");
+        frame.Background = ThemeBrush("SurfaceStatusBrush", "SidebarBackgroundBrush", "#FFFFFF");
+        frame.BorderBrush = ThemeBrush("BorderSubtleBrush", "BorderDefaultBrush", "#D9D9D9");
         frame.BorderThickness = new Thickness(0, 1, 0, 0);
         frame.Padding = SuiteScale.StatusBarPadding;
     }

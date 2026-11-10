@@ -76,11 +76,11 @@ public sealed class SuiteWelcomeCard : UserControl
     void Retheme()
     {
         _card.Background = Brush("SurfaceBackgroundBrush", "#FFFFFF");
-        _card.BorderBrush = Brush("BorderSubtleBrush", "#D8DEE8");
-        _note.Foreground = Brush("TextPrimaryBrush", "#1A2332");
-        _credit.Foreground = Brush("TextSecondaryBrush", "#5D6B82");
+        _card.BorderBrush = Brush("BorderSubtleBrush", "#D9D9D9");
+        _note.Foreground = Brush("TextPrimaryBrush", "#000000");
+        _credit.Foreground = Brush("TextSecondaryBrush", "#4D4D4D");
         var dark = ActualTheme == ElementTheme.Dark;
-        _lockupPlate.Background = dark ? Brush("", "#EEF2F8") : null;
+        _lockupPlate.Background = dark ? Brush("", "#FFFFFF") : null;
         _lockupPlate.Padding = dark ? new Thickness(12) : new Thickness(0);
     }
 
