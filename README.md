@@ -71,7 +71,7 @@ On each navigation pane: `O.Ui.SuiteNavigation.Apply(navigationView, O.Ui.SuiteA
 A menu bar, a left navigation pane (or activity rail) with destinations, and the page beside it. MynaHub and MynaOps use their own tab rows over the page; MynaCAD its own shell. (The Myna launcher's rail was removed on 2026-11-11.) The library holds the look; each app keeps its own pages.
 
 ## Building
-The apps reference this project by relative path (`..\..\..\MynaUI\O.Ui\O.Ui.csproj`), so clone `HolagundiWorks/O-UI` beside them as the folder name `MynaUI`. The assembly name remains `O.Ui`. It targets Windows App SDK 1.6, the lowest version either app uses.
+The apps reference this project by relative path (`..\..\..\MynaUI\O.Ui\O.Ui.csproj`), so clone `HolagundiWorks/MynaUI` beside them as the folder name `MynaUI`. The assembly name remains `O.Ui`. It targets Windows App SDK 1.6, the lowest version either app uses.
 
 ## Licence
 The code is MIT licensed (`LICENSE`). The marks in `brand/` are not; see `brand/LICENSE.md`.
