@@ -6,7 +6,7 @@ WinUI 3 class library **`O.Ui`** (folder `o-ui/O.Ui/`). **HCW.ui / `Hcw.Ui` is r
 |---|---|---|
 | MynaHub | `SuiteAccent.Orange` | Ember `#B83E16`, white text on it |
 | MynaCAD | `SuiteAccent.Mirage` | Midnight `#102C80`, white text on it |
-| MynaMod | `SuiteAccent.Sea` | Grove `#166040`, white text on it (planned app) |
+| Myna3D | `SuiteAccent.Sea` | Grove `#166040`, white text on it (planned app) |
 | MynaOps | `SuiteAccent.Sand` | Dusk `#5630A0`, white text on it |
 
 The palette, the mark, the AI agent's orb and the type are described in `docs/BRANDING.md` in the MynaHub repository.
