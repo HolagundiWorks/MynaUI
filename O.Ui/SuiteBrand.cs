@@ -12,7 +12,7 @@ public enum SuiteApp
     /// <summary>MynaCAD: drafting. Dark Slate Blue (Mirage). Identifier remains O-Draft.</summary>
     Draft,
 
-    /// <summary>MynaMod: 3D and BIM form. Deep Sea Green. Planned. Identifier remains O-Form.</summary>
+    /// <summary>Myna3D: 3D and BIM form. Deep Sea Green. Planned. Identifier remains O-Form.</summary>
     Form,
 }
 
@@ -32,7 +32,7 @@ public static class SuiteBrand
     public const string Drafting = "MynaCAD";
 
     /// <summary>User-visible name of the planned form app. Identifiers stay <c>O-Form</c>.</summary>
-    public const string FormName = "MynaMod";
+    public const string FormName = "Myna3D";
 
     public static string Name(SuiteApp app) => app switch
     {

@@ -11,7 +11,7 @@ var output = args.Length > 0 ? args[0] : Path.Combine(AppContext.BaseDirectory, 
 // The suite palette. The AI orb uses the four gold gradient stops.
 var mirage = ColorTranslator.FromHtml("#102C80"); // Midnight (MynaCAD)
 var flame = ColorTranslator.FromHtml("#B83E16");  // Ember (MynaHub)
-var sea = ColorTranslator.FromHtml("#166040");    // Grove (MynaMod)
+var sea = ColorTranslator.FromHtml("#166040");    // Grove (Myna3D)
 var sand = ColorTranslator.FromHtml("#5630A0");   // Dusk (MynaOps)
 var white = Color.White;
 var ink = mirage;
@@ -22,7 +22,7 @@ var apps = new (string Folder, string Name, Color Plate, Color Glyph)[]
 {
     ("studio", "MynaHub", flame, white),
     ("draft", "MynaCAD", mirage, white),
-    ("form", "MynaMod", sea, white),
+    ("form", "Myna3D", sea, white),
     ("coreop", "MynaOps", sand, white),
     ("launcher", "Myna", ColorTranslator.FromHtml("#000000"), white),
 };
@@ -178,7 +178,7 @@ static Bitmap Lockup(string name, Color plate, Color glyph, bool plated = false)
         "MynaHub" => "Company, people and approvals",
         "MynaCAD" => "Drafting",
         "MynaOps" => "Quantities, estimates and billing",
-        "MynaMod" => "3D and BIM modelling",
+        "Myna3D" => "3D and BIM modelling",
         _ => "Architecture, engineering and operations",
     };
     g.DrawString(useCase, line, softBrush, 660, 360);
@@ -327,7 +327,7 @@ static Bitmap Sheet((string Folder, string Name, Color Plate, Color Glyph)[] app
     {
         ("Midnight", "MynaCAD", mirage, Color.White),
         ("Ember", "MynaHub", flame, Color.White),
-        ("Grove", "MynaMod", sea, Color.White),
+        ("Grove", "Myna3D", sea, Color.White),
         ("Dusk", "MynaOps", sand, Color.White),
     };
     for (var i = 0; i < swatches.Length; i++)
